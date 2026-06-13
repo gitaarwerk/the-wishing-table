@@ -1,0 +1,21 @@
+## Title: The Wishing Table
+## Interface: 20504
+## X-Min-Interface: 20504
+## X-Future-Interface: TBA
+## Version: @project-version@
+## IconTexture: Interface\AddOns\TheWishingTable\addonIcon.jpg
+## Author: Space Corp
+## Notes: Tells in party, instance or raid that you put out consumables
+## SavedVariablesPerCharacter: TheWishingTableVars
+## LoadOnDemand: 0
+## DefaultState: enabled
+## X-Category: Boss encounters, Raid, Chat, Healer
+## X-Date: @project-date-iso@
+## X-ResetVarsDate: 2026-06-12T00:00:00Z
+## X-License: All Rights Reserved
+## X-Website: https://www.curseforge.com/wow/addons/the-wishing-table
+## X-Curse-Project-ID: 1152164
+
+Src/AltGameTooltip.xml
+Src/ConfigurationScreen.xml
+Src/Main.xml

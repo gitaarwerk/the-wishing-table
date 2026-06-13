@@ -1,0 +1,369 @@
+<Ui
+  xmlns="http://www.blizzard.com/wow/ui/"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd"
+>
+<Frame
+    name="TheWhishingTable_ConfigScreen"
+    toplevel="true"
+    frameStrata="DIALOG"
+    movable="true"
+    enableMouse="true"
+    hidden="true"
+    parent="UIParent"
+    clampedToScreen="true"
+  >
+    <Scripts>
+        <OnLoad>
+            self:RegisterEvent("ADDON_LOADED")
+            self:RegisterForDrag("LeftButton")
+
+            local function eventHandler(TheWhishingTable_ConfigScreen, event, arg1, ...)
+                if (event == "ADDON_LOADED" and arg1 == "TheWishingTable") then
+                    print("\124cffffcee2The Wishing Table is loaded. To check options; type: " .. TheWishingTableMessageColor ..  "/nn \124ror" .. TheWishingTableMessageColor .. " /TheWishingTable\124r.")
+                    local date = C_AddOns.GetAddOnMetadata("TheWishingTable", "X-ResetVarsDate")
+
+                    -- reset out of date addons
+                    if (TheWishingTableVars and TheWishingTableVars.lastResetDate ~= date) then
+                        print(TheWishingTableMessageColor .. 'Config had to be reset because of new functionality.')
+                        TheWishingTableVars = nil
+                    end
+
+                    if (TheWishingTableVars == nil) then
+                        TheWishingTableVars = {};
+                        TheWishingTableVars.debugMode = false;
+                        TheWishingTableVars.lastResetDate = date;
+                        TheWishingTableVars.TheWishingTableIsOn = true;
+                        TheWishingTableVars.usePrefix = true;
+
+                        TheWishingTableVars.consumableSpell_channel = 3;
+                        TheWishingTableVars.consumableSpell_instance = true;
+                        TheWishingTableVars.consumableSpell_text = 'party and raid';
+
+                        self:Show()
+                    end
+
+                    TheWhishingTable_ConfigScreen_TheWishingTable:SetChecked(TheWishingTableVars.TheWishingTableIsOn);
+
+                    -- consumable spell channel
+                    _G[TheWhishingTable_ConfigScreen_consumableSpell_Channel:GetName().."Low"]:SetText("none")
+                    _G[TheWhishingTable_ConfigScreen_consumableSpell_Channel:GetName().."High"]:SetText("raid")
+                        TheWhishingTable_ConfigScreen_consumableSpell_Channel:SetValueStep(1)
+                        TheWhishingTable_ConfigScreen_consumableSpell_Channel:SetStepsPerPage(1)
+                        TheWhishingTable_ConfigScreen_consumableSpell_Channel:SetMinMaxValues(0,3)
+
+                    _G[TheWhishingTable_ConfigScreen_consumableSpell_Channel:GetName().."Text"]:SetText(TheWishingTableVars.consumableSpell_text)
+                    TheWhishingTable_ConfigScreen_consumableSpell_Channel:SetValue(TheWishingTableVars.consumableSpell_channel)
+                    TheWhishingTable_ConfigScreen_consumableSpell_Instance:SetChecked(TheWishingTableVars.consumableSpell_instance)
+
+                end
+            end
+            self:SetScript("OnEvent", eventHandler);
+        </OnLoad>
+        <OnDragStart>
+            self:StartMoving()
+        </OnDragStart>
+        <OnDragStop>
+            self:StopMovingOrSizing()
+          </OnDragStop>
+    </Scripts>
+
+    <Size>
+        <AbsDimension x="630" y="400" />
+    </Size>
+    <Anchors>
+        <Anchor point="CENTER" />
+    </Anchors>
+    <Layers>
+        <Layer level="BACKGROUND">
+            <Texture name="$parent_Background" setAllPoints="true">
+                <Color r="0" g="0" b="0" a="0.65" />
+            </Texture>
+        </Layer>
+        <Layer level="BORDER" textureSubLevel="-5">
+            <Texture inherits="UI-Frame-InnerBotLeftCorner" parentKey="InsetBorderBottomLeft">
+                <Anchors>
+                    <Anchor point="BOTTOMLEFT" x="0" y="0" />
+                </Anchors>
+            </Texture>
+            <Texture inherits="UI-Frame-InnerBotRight" parentKey="InsetBorderBottomRight">
+                <Anchors>
+                    <Anchor point="BOTTOMRIGHT" x="0" y="0" />
+                </Anchors>
+            </Texture>
+            <Texture inherits="_UI-Frame-InnerBotTile" parentKey="InsetBorderTop">
+                <Anchors>
+                    <Anchor
+              x="0"
+              y="2"
+              point="TOPLEFT"
+              relativeKey="$parent.InsetBorderTopLeft"
+              relativePoint="TOPRIGHT"
+            />
+                    <Anchor
+              x="0"
+              y="2"
+              point="TOPRIGHT"
+              relativeKey="$parent.InsetBorderTopRight"
+              relativePoint="TOPLEFT"
+            />
+                </Anchors>
+            </Texture>
+            <Texture inherits="_UI-Frame-InnerBotTile" parentKey="InsetBorderBottom">
+                <Anchors>
+                    <Anchor
+              point="BOTTOMLEFT"
+              relativeKey="$parent.InsetBorderBottomLeft"
+              relativePoint="BOTTOMRIGHT"
+            />
+                    <Anchor
+              point="BOTTOMRIGHT"
+              relativeKey="$parent.InsetBorderBottomRight"
+              relativePoint="BOTTOMLEFT"
+            />
+                </Anchors>
+            </Texture>
+            <Texture inherits="!UI-Frame-InnerLeftTile" parentKey="InsetBorderLeft">
+                <Anchors>
+                    <Anchor point="TOPLEFT" x="0" y="0" />
+                    <Anchor
+              point="BOTTOMLEFT"
+              relativeKey="$parent.InsetBorderBottomRight"
+              relativePoint="TOPLEFT"
+            />
+                </Anchors>
+            </Texture>
+            <Texture inherits="!UI-Frame-InnerRightTile" parentKey="InsetBorderRight">
+                <Anchors>
+                    <Anchor point="TOPRIGHT" x="0" y="0" />
+                    <Anchor
+              point="BOTTOMRIGHT"
+              relativeKey="$parent.InsetBorderBottomRight"
+              relativePoint="TOPRIGHT"
+            />
+                </Anchors>
+            </Texture>
+        </Layer>
+        <Layer level="ARTWORK">
+            <Texture
+          name="TheWhishingTable_ConfigScreen_Header"
+          file="Interface\DialogFrame\UI-DialogBox-Header"
+        >
+                <Size>
+                    <AbsDimension x="356" y="64" />
+                </Size>
+                <Anchors>
+                    <Anchor point="TOP">
+                        <Offset>
+                            <AbsDimension x="0" y="18" />
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+            </Texture>
+            <FontString inherits="GameFontNormal" text="The Wishing Table">
+                <Anchors>
+                    <Anchor point="TOP" relativeTo="TheWhishingTable_ConfigScreen_Header">
+                        <Offset>
+                            <AbsDimension x="0" y="-14" />
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+            </FontString>
+            <FontString
+          name="TheWishingTableText"
+          inherits="GameFontNormalLarge"
+          text="Enable The Wishing Table (or use: /nn off, /nn on, /nn toggle)"
+        >
+                <Anchors>
+                    <Anchor
+              point="TOPLEFT"
+              relativePoint="TheWhishingTable_ConfigScreen_TheWishingTable"
+              x="60"
+              y="-40"
+            />
+                </Anchors>
+            </FontString>
+
+            <FontString name="TheWishingTableText" inherits="GameFontNormal" text="Ressurrection types">
+                <Anchors>
+                    <Anchor
+              point="TOPLEFT"
+              relativePoint="TheWhishingTable_ConfigScreen_TheWishingTable"
+              x="60"
+              y="-80"
+            />
+                </Anchors>
+            </FontString>
+            <FontString
+          name="TheWishingTableText"
+          inherits="GameFontNormal"
+          text="Enable for LFR / LFG? ('instance chat')"
+        >
+                <Anchors>
+                    <Anchor
+              point="TOPLEFT"
+              relativePoint="TheWhishingTable_ConfigScreen_TheWishingTable"
+              x="330"
+              y="-80"
+            />
+                </Anchors>
+            </FontString>
+
+            <!-- yes -->
+            <FontString name="TheWishingTableText" inherits="GameFontNormalSmall" text="Yes">
+                <Anchors>
+                    <Anchor
+              point="TOPLEFT"
+              relativePoint="TheWhishingTable_ConfigScreen_TheWishingTable"
+              x="360"
+              y="-120"
+            />
+                </Anchors>
+            </FontString>
+            <FontString name="TheWishingTableText" inherits="GameFontNormalSmall" text="Yes">
+                <Anchors>
+                    <Anchor
+              point="TOPLEFT"
+              relativePoint="TheWhishingTable_ConfigScreen_TheWishingTable"
+              x="360"
+              y="-180"
+            />
+                </Anchors>
+            </FontString>
+            <FontString name="TheWishingTableText" inherits="GameFontNormalSmall" text="Yes">
+                <Anchors>
+                    <Anchor
+              point="TOPLEFT"
+              relativePoint="TheWhishingTable_ConfigScreen_TheWishingTable"
+              x="360"
+              y="-240"
+            />
+                </Anchors>
+            </FontString>
+            <FontString name="TheWishingTableText" inherits="GameFontNormalSmall" text="Yes">
+                <Anchors>
+                    <Anchor
+              point="TOPLEFT"
+              relativePoint="TheWhishingTable_ConfigScreen_TheWishingTable"
+              x="360"
+              y="-300"
+            />
+                </Anchors>
+            </FontString>
+            <!-- /end yes -->
+        </Layer>
+    </Layers>
+    <Frames>
+        <Button name="$parentButtonClose" inherits="UIPanelCloseButton">
+            <Anchors>
+                <Anchor point="TOPRIGHT" relativePoint="TOPRIGHT">
+                    <Offset>
+                        <AbsDimension x="8" y="8" />
+                    </Offset>
+                </Anchor>
+            </Anchors>
+            <Scripts>
+                <OnClick>TheWhishingTable_ConfigScreen:Hide()</OnClick>
+            </Scripts>
+        </Button>
+
+
+
+    <Slider name="TheWhishingTable_ConfigScreen_consumableSpell_Channel" inherits="OptionsSliderTemplate">
+        <Size x="100" y="16" />
+        <Anchors>
+            <Anchor
+            point="TOPLEFT"
+            relativePoint="TheWhishingTable_ConfigScreen_TheWishingTable"
+            x="200"
+            y="-180"
+          />
+        </Anchors>
+        <Layers>
+            <Layer level="ARTWORK">
+                <FontString
+              name="$parentLabel"
+              parentKey="Label"
+              inherits="GameFontNormalSmall"
+              text="Text channel"
+            >
+                    <Anchors>
+                        <Anchor point="RIGHT" relativePoint="LEFT" x="-17" y="0" />
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Scripts>
+            <OnValueChanged>
+                TheWhishingTable_ConfigScreen_SetChannel('consumableSpell', value)
+            </OnValueChanged>
+        </Scripts>
+    </Slider>
+
+        <!-- The Wishing Table -->
+        <CheckButton
+        name="TheWhishingTable_ConfigScreen_TheWishingTable"
+        inherits="UIPanelButtonTemplate "
+        motionScriptsWhileDisabled="true"
+        virtual="false"
+      >
+            <Size>
+                <AbsDimension x="25" y="25" />
+            </Size>
+            <Anchors>
+                <Anchor point="TOPLEFT" relativePoint="TOPLEFT">
+                    <Offset>
+                        <AbsDimension x="30" y="-35" />
+                    </Offset>
+                </Anchor>
+            </Anchors>
+            <Scripts>
+                <OnClick>
+                    if (TheWhishingTable_ConfigScreen_TheWishingTable:GetChecked() == true) then
+                        TheWhishingTable_TheWishingTableOn()
+                    else
+                        TheWhishingTable_TheWishingTableOff()
+                    end
+                </OnClick>
+            </Scripts>
+            <NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
+            <PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
+            <HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD" />
+            <CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
+            <DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled" />
+        </CheckButton>
+
+        <CheckButton
+        name="TheWhishingTable_ConfigScreen_consumableSpell_Instance"
+        inherits="UIPanelButtonTemplate "
+        motionScriptsWhileDisabled="true"
+        virtual="false"
+      >
+            <Size>
+                <AbsDimension x="25" y="25" />
+            </Size>
+            <Anchors>
+                <Anchor point="TOPLEFT" relativePoint="TOPLEFT">
+                    <Offset>
+                        <AbsDimension x="330" y="-170" />
+                    </Offset>
+                </Anchor>
+            </Anchors>
+            <Scripts>
+                <OnClick>
+                    if (TheWhishingTable_ConfigScreen_consumableSpell_Instance:GetChecked() == true) then
+                        TheWhishingTable_SetconsumableSpellInstance(true);
+                    else
+                        TheWhishingTable_SetconsumableSpellInstance(false);
+                    end
+                </OnClick>
+            </Scripts>
+            <NormalTexture file="Interface\Buttons\UI-CheckBox-Up" />
+            <PushedTexture file="Interface\Buttons\UI-CheckBox-Down" />
+            <HighlightTexture file="Interface\Buttons\UI-CheckBox-Highlight" alphaMode="ADD" />
+            <CheckedTexture file="Interface\Buttons\UI-CheckBox-Check" />
+            <DisabledCheckedTexture file="Interface\Buttons\UI-CheckBox-Check-Disabled" />
+        </CheckButton>
+    </Frames>
+</Frame>
+</Ui>

@@ -1,0 +1,11 @@
+<Ui
+  xmlns="http://www.blizzard.com/wow/ui/"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd"
+>
+    <Script file="Src/Constants/Constants.lua" />
+    <Script file="Src/Interface.lua" />
+    <Script file="Src/Helpers.lua" />
+    <Script file="Src/SpellIds.lua" />
+    <Script file="Src/TheWishingTable/TheWishingTable.lua" />
+</Ui>
