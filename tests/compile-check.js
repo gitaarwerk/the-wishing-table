@@ -105,10 +105,20 @@ test("at least one alchemy cauldron ID is listed", () => {
 });
 
 test("spellIds table is not empty", () => {
-  const body = extractTableBody(spellContent, "local spellIds = {");
-  assert(body !== null, "spellIds table not found");
-  const entries = body.split("\n").filter((l) => /^\s*\d+/.test(l));
-  assert(entries.length > 0, "spellIds table is empty");
+  const mageTable = extractTableBody(spellContent, "TheWishingTable.SpellIds.MageTable = {");
+  const soulWell = extractTableBody(spellContent, "TheWishingTable.SpellIds.SoulWell = {");
+  const feast = extractTableBody(spellContent, "TheWishingTable.SpellIds.Feast = {");
+  const cauldron = extractTableBody(spellContent, "TheWishingTable.SpellIds.Cauldron = {");
+
+  assert(mageTable !== null || soulWell !== null || feast !== null || cauldron !== null, "spellIds table not found");
+
+  const allEntries = [
+    ...(mageTable ? mageTable.split("\n").filter((l) => /^\s*\d+/.test(l)) : []),
+    ...(soulWell ? soulWell.split("\n").filter((l) => /^\s*\d+/.test(l)) : []),
+    ...(feast ? feast.split("\n").filter((l) => /^\s*\d+/.test(l)) : []),
+    ...(cauldron ? cauldron.split("\n").filter((l) => /^\s*\d+/.test(l)) : [])
+  ];
+  assert(allEntries.length > 0, "spellIds tables are empty");
 });
 
 // ─────────────────────────────────────────────

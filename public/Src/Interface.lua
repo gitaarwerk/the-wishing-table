@@ -112,16 +112,16 @@ local function TheWhishingTable_Init(msg)
   else
     TheWhishingTable_ConfigScreen:Show()
     -- If not handled above, display some sort of help message
-    print("/nn or /TheWishingTable for following commands")
-    print("/nn on - turns on The Wishing Table")
-    print("/nn off - turns off The Wishing Table")
-    print("/nn toggle - toggles The Wishing Table on and off")
+    print("/twt or /wishingtable for following commands")
+    print("/twt on - turns on The Wishing Table")
+    print("/twt off - turns off The Wishing Table")
+    print("/twt toggle - toggles The Wishing Table on and off")
     print("And to reset the vars:")
-    print("Syntax: /nn reset")
+    print("Syntax: /twt reset")
   end
 end
 
-SlashCmdList["NNANCY"] = TheWhishingTable_Init
+SlashCmdList["TWISHINGTABLE"] = TheWhishingTable_Init
 
-SLASH_NNANCY1 = "/nn"
-SLASH_NNANCY2 = "/TheWishingTable"
+SLASH_NNANCY1 = "/twt"
+SLASH_NNANCY2 = "/wishingtable"

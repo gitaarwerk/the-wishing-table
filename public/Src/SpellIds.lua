@@ -1,82 +1,81 @@
 TheWishingTable.SpellIds = {}
 
-function TheWishingTable.SpellIds.isConsumableSpellCasting(spellId)
-  local spellIds = {
+TheWishingTable.SpellIds.MageTable = {
+  58659,  -- Ritual of Refreshment              (WotLK 3.x)
+  190336, -- Conjure Refreshment Table           (Legion 7.x – current)
+}
 
-    -- =========================================================
-    -- Mage: Refreshment Table
-    -- =========================================================
-    58659,  -- Ritual of Refreshment              (WotLK 3.x)
-    190336, -- Conjure Refreshment Table           (Legion 7.x – current)
+TheWishingTable.SpellIds.SoulWell = {
+  29893,  -- Ritual of Souls                     (TBC 2.x – current)
+}
 
-    -- =========================================================
-    -- Warlock: Soul Well
-    -- =========================================================
-    29893,  -- Ritual of Souls                     (TBC 2.x – current)
+TheWishingTable.SpellIds.Feast = {
+  -- Wrath of the Lich King (3.x)
+  57301,  -- Fish Feast
+  57425,  -- Great Feast
+  72237,  -- Bountiful Feast                     (Pilgrim's Bounty holiday)
 
-    -- =========================================================
-    -- Cooking Feasts  (placed on the ground for the group)
-    -- =========================================================
+  -- Cataclysm (4.x)
+  87560,  -- Seafood Magnifique Feast
 
-    -- Wrath of the Lich King (3.x)
-    57301,  -- Fish Feast
-    57425,  -- Great Feast
-    72237,  -- Bountiful Feast                     (Pilgrim's Bounty holiday)
+  -- Mists of Pandaria (5.x)
+  126492, -- Pandaren Banquet
+  126494, -- Great Pandaren Banquet
 
-    -- Cataclysm (4.x)
-    87560,  -- Seafood Magnifique Feast
+  -- Warlords of Draenor (6.x)
+  185706, -- Feast of Blood
+  185707, -- Feast of the Waters
 
-    -- Mists of Pandaria (5.x)
-    126492, -- Pandaren Banquet
-    126494, -- Great Pandaren Banquet
+  -- Legion (7.x)
+  199427, -- Lavish Suramar Feast
+  201324, -- The Hungry Magister
 
-    -- Warlords of Draenor (6.x)
-    185706, -- Feast of Blood
-    185707, -- Feast of the Waters
+  -- Battle for Azeroth (8.x)
+  259409, -- Bountiful Captain's Feast
+  259410, -- Galley Banquet
 
-    -- Legion (7.x)
-    199427, -- Lavish Suramar Feast
-    201324, -- The Hungry Magister
+  -- Shadowlands (9.x)
+  308458, -- Feast of Gluttonous Hedonism
+  308460, -- Surprisingly Palatable Feast
 
-    -- Battle for Azeroth (8.x)
-    259409, -- Bountiful Captain's Feast
-    259410, -- Galley Banquet
+  -- Dragonflight (10.x)
+  382956, -- Grand Banquet of the Kalu'ak
+  382953, -- Yusa's Hearty Stew
+  390215, -- Deviously Deviled Eggs
 
-    -- Shadowlands (9.x)
-    308458, -- Feast of Gluttonous Hedonism
-    308460, -- Surprisingly Palatable Feast
+  -- The War Within (11.x) – add feast IDs here when known
+  -- Midnight (12.x)     – add feast IDs here when known
+}
 
-    -- Dragonflight (10.x)
-    382956, -- Grand Banquet of the Kalu'ak
-    382953, -- Yusa's Hearty Stew
-    390215, -- Deviously Deviled Eggs
+TheWishingTable.SpellIds.Cauldron = {
+  -- Cataclysm (4.x)
+  92682,  -- Cauldron of Battle
+  92683,  -- Big Cauldron of Battle
 
-    -- The War Within (11.x) – add feast IDs here when known
-    -- Midnight (12.x)     – add feast IDs here when known
+  -- Shadowlands (9.x)
+  307185, -- Potion Cauldron of Power
+  391529, -- Cauldron of Ultimate Power          (added in 9.2)
 
-    -- =========================================================
-    -- Alchemy Cauldrons  (placed on the ground for the raid)
-    -- =========================================================
+  -- Dragonflight (10.x)
+  382553, -- Elemental Cauldron of Power
 
-    -- Cataclysm (4.x)
-    92682,  -- Cauldron of Battle
-    92683,  -- Big Cauldron of Battle
+  -- The War Within (11.x) – add cauldron IDs here when known
+  -- Midnight (12.x)     – add cauldron IDs here when known
+}
 
-    -- Shadowlands (9.x)
-    307185, -- Potion Cauldron of Power
-    391529, -- Cauldron of Ultimate Power          (added in 9.2)
-
-    -- Dragonflight (10.x)
-    382553, -- Elemental Cauldron of Power
-
-    -- The War Within (11.x) – add cauldron IDs here when known
-    -- Midnight (12.x)     – add cauldron IDs here when known
-
-  }
-
-  if TheWishingTable.Helpers.tableContainsValue(spellIds, spellId) then
-    return true
+function TheWishingTable.SpellIds.getSpellCategory(spellId)
+  if TheWishingTable.Helpers.tableContainsValue(TheWishingTable.SpellIds.MageTable, spellId) then
+    return "mage_table"
+  elseif TheWishingTable.Helpers.tableContainsValue(TheWishingTable.SpellIds.SoulWell, spellId) then
+    return "soul_well"
+  elseif TheWishingTable.Helpers.tableContainsValue(TheWishingTable.SpellIds.Feast, spellId) then
+    return "feast"
+  elseif TheWishingTable.Helpers.tableContainsValue(TheWishingTable.SpellIds.Cauldron, spellId) then
+    return "cauldron"
   end
+  return nil
+end
 
-  return false
+function TheWishingTable.SpellIds.isConsumableSpellCasting(spellId)
+  return TheWishingTable.SpellIds.getSpellCategory(spellId) ~= nil
 end
