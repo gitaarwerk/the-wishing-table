@@ -187,7 +187,7 @@
             <FontString
           name="TheWishingTableText"
           inherits="GameFontNormal"
-          text="Ressurrection types"
+          text="Accounce in:"
         >
                 <Anchors>
                     <Anchor
@@ -213,17 +213,7 @@
                 </Anchors>
             </FontString>
 
-            <!-- yes -->
-            <FontString name="TheWishingTableText" inherits="GameFontNormalSmall" text="Yes">
-                <Anchors>
-                    <Anchor
-              point="TOPLEFT"
-              relativePoint="TheWishingTable_ConfigScreen_TheWishingTable"
-              x="360"
-              y="-120"
-            />
-                </Anchors>
-            </FontString>
+            
             <FontString name="TheWishingTableText" inherits="GameFontNormalSmall" text="Yes">
                 <Anchors>
                     <Anchor
@@ -234,26 +224,7 @@
             />
                 </Anchors>
             </FontString>
-            <FontString name="TheWishingTableText" inherits="GameFontNormalSmall" text="Yes">
-                <Anchors>
-                    <Anchor
-              point="TOPLEFT"
-              relativePoint="TheWishingTable_ConfigScreen_TheWishingTable"
-              x="360"
-              y="-240"
-            />
-                </Anchors>
-            </FontString>
-            <FontString name="TheWishingTableText" inherits="GameFontNormalSmall" text="Yes">
-                <Anchors>
-                    <Anchor
-              point="TOPLEFT"
-              relativePoint="TheWishingTable_ConfigScreen_TheWishingTable"
-              x="360"
-              y="-300"
-            />
-                </Anchors>
-            </FontString>
+            
             <!-- /end yes -->
         </Layer>
     </Layers>
