@@ -60,7 +60,7 @@ const luaFiles = [
   "Constants/Constants.lua",
   "Helpers.lua",
   "SpellIds.lua",
-  "TheWhishingTable/TheWhishingTable.lua",
+  "TheWishingTable/TheWishingTable.lua",
 ];
 
 for (const relPath of luaFiles) {
@@ -124,9 +124,9 @@ test("spellIds table is not empty", () => {
 // ─────────────────────────────────────────────
 // TheWishingTable.lua
 // ─────────────────────────────────────────────
-console.log("\nTheWhishingTable/TheWhishingTable.lua\n");
+console.log("\nTheWishingTable/TheWishingTable.lua\n");
 
-const mainContent = readFile("TheWhishingTable/TheWhishingTable.lua");
+const mainContent = readFile("TheWishingTable/TheWishingTable.lua");
 
 test("speakconsumableSpell function is defined", () => {
   assert(

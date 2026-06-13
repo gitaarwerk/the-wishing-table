@@ -4,7 +4,7 @@
   xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd"
 >
 <Frame
-    name="TheWhishingTable_ConfigScreen"
+    name="TheWishingTable_ConfigScreen"
     toplevel="true"
     frameStrata="DIALOG"
     movable="true"
@@ -18,7 +18,7 @@
             self:RegisterEvent("ADDON_LOADED")
             self:RegisterForDrag("LeftButton")
 
-            local function eventHandler(TheWhishingTable_ConfigScreen, event, arg1, ...)
+            local function eventHandler(TheWishingTable_ConfigScreen, event, arg1, ...)
                 if (event == "ADDON_LOADED" and arg1 == "TheWishingTable") then
                     print("\124cffffcee2The Wishing Table is loaded. To check options; type: " .. TheWishingTableMessageColor ..  "/twt \124ror" .. TheWishingTableMessageColor .. " /wishingtable\124r.")
                     local date = C_AddOns.GetAddOnMetadata("TheWishingTable", "X-ResetVarsDate")
@@ -43,18 +43,18 @@
                         self:Show()
                     end
 
-                    TheWhishingTable_ConfigScreen_TheWishingTable:SetChecked(TheWishingTableVars.TheWishingTableIsOn);
+                    TheWishingTable_ConfigScreen_TheWishingTable:SetChecked(TheWishingTableVars.TheWishingTableIsOn);
 
                     -- consumable spell channel
-                    _G[TheWhishingTable_ConfigScreen_consumableSpell_Channel:GetName().."Low"]:SetText("none")
-                    _G[TheWhishingTable_ConfigScreen_consumableSpell_Channel:GetName().."High"]:SetText("raid")
-                        TheWhishingTable_ConfigScreen_consumableSpell_Channel:SetValueStep(1)
-                        TheWhishingTable_ConfigScreen_consumableSpell_Channel:SetStepsPerPage(1)
-                        TheWhishingTable_ConfigScreen_consumableSpell_Channel:SetMinMaxValues(0,3)
+                    _G[TheWishingTable_ConfigScreen_consumableSpell_Channel:GetName().."Low"]:SetText("none")
+                    _G[TheWishingTable_ConfigScreen_consumableSpell_Channel:GetName().."High"]:SetText("raid")
+                        TheWishingTable_ConfigScreen_consumableSpell_Channel:SetValueStep(1)
+                        TheWishingTable_ConfigScreen_consumableSpell_Channel:SetStepsPerPage(1)
+                        TheWishingTable_ConfigScreen_consumableSpell_Channel:SetMinMaxValues(0,3)
 
-                    _G[TheWhishingTable_ConfigScreen_consumableSpell_Channel:GetName().."Text"]:SetText(TheWishingTableVars.consumableSpell_text)
-                    TheWhishingTable_ConfigScreen_consumableSpell_Channel:SetValue(TheWishingTableVars.consumableSpell_channel)
-                    TheWhishingTable_ConfigScreen_consumableSpell_Instance:SetChecked(TheWishingTableVars.consumableSpell_instance)
+                    _G[TheWishingTable_ConfigScreen_consumableSpell_Channel:GetName().."Text"]:SetText(TheWishingTableVars.consumableSpell_text)
+                    TheWishingTable_ConfigScreen_consumableSpell_Channel:SetValue(TheWishingTableVars.consumableSpell_channel)
+                    TheWishingTable_ConfigScreen_consumableSpell_Instance:SetChecked(TheWishingTableVars.consumableSpell_instance)
 
                 end
             end
@@ -146,7 +146,7 @@
         </Layer>
         <Layer level="ARTWORK">
             <Texture
-          name="TheWhishingTable_ConfigScreen_Header"
+          name="TheWishingTable_ConfigScreen_Header"
           file="Interface\DialogFrame\UI-DialogBox-Header"
         >
                 <Size>
@@ -162,7 +162,7 @@
             </Texture>
             <FontString inherits="GameFontNormal" text="The Wishing Table">
                 <Anchors>
-                    <Anchor point="TOP" relativeTo="TheWhishingTable_ConfigScreen_Header">
+                    <Anchor point="TOP" relativeTo="TheWishingTable_ConfigScreen_Header">
                         <Offset>
                             <AbsDimension x="0" y="-14" />
                         </Offset>
@@ -177,18 +177,22 @@
                 <Anchors>
                     <Anchor
               point="TOPLEFT"
-              relativePoint="TheWhishingTable_ConfigScreen_TheWishingTable"
+              relativePoint="TheWishingTable_ConfigScreen_TheWishingTable"
               x="60"
               y="-40"
             />
                 </Anchors>
             </FontString>
 
-            <FontString name="TheWishingTableText" inherits="GameFontNormal" text="Ressurrection types">
+            <FontString
+          name="TheWishingTableText"
+          inherits="GameFontNormal"
+          text="Ressurrection types"
+        >
                 <Anchors>
                     <Anchor
               point="TOPLEFT"
-              relativePoint="TheWhishingTable_ConfigScreen_TheWishingTable"
+              relativePoint="TheWishingTable_ConfigScreen_TheWishingTable"
               x="60"
               y="-80"
             />
@@ -202,7 +206,7 @@
                 <Anchors>
                     <Anchor
               point="TOPLEFT"
-              relativePoint="TheWhishingTable_ConfigScreen_TheWishingTable"
+              relativePoint="TheWishingTable_ConfigScreen_TheWishingTable"
               x="330"
               y="-80"
             />
@@ -214,7 +218,7 @@
                 <Anchors>
                     <Anchor
               point="TOPLEFT"
-              relativePoint="TheWhishingTable_ConfigScreen_TheWishingTable"
+              relativePoint="TheWishingTable_ConfigScreen_TheWishingTable"
               x="360"
               y="-120"
             />
@@ -224,7 +228,7 @@
                 <Anchors>
                     <Anchor
               point="TOPLEFT"
-              relativePoint="TheWhishingTable_ConfigScreen_TheWishingTable"
+              relativePoint="TheWishingTable_ConfigScreen_TheWishingTable"
               x="360"
               y="-180"
             />
@@ -234,7 +238,7 @@
                 <Anchors>
                     <Anchor
               point="TOPLEFT"
-              relativePoint="TheWhishingTable_ConfigScreen_TheWishingTable"
+              relativePoint="TheWishingTable_ConfigScreen_TheWishingTable"
               x="360"
               y="-240"
             />
@@ -244,7 +248,7 @@
                 <Anchors>
                     <Anchor
               point="TOPLEFT"
-              relativePoint="TheWhishingTable_ConfigScreen_TheWishingTable"
+              relativePoint="TheWishingTable_ConfigScreen_TheWishingTable"
               x="360"
               y="-300"
             />
@@ -263,18 +267,21 @@
                 </Anchor>
             </Anchors>
             <Scripts>
-                <OnClick>TheWhishingTable_ConfigScreen:Hide()</OnClick>
+                <OnClick>TheWishingTable_ConfigScreen:Hide()</OnClick>
             </Scripts>
         </Button>
 
 
 
-    <Slider name="TheWhishingTable_ConfigScreen_consumableSpell_Channel" inherits="OptionsSliderTemplate">
+    <Slider
+        name="TheWishingTable_ConfigScreen_consumableSpell_Channel"
+        inherits="OptionsSliderTemplate"
+      >
         <Size x="100" y="16" />
         <Anchors>
             <Anchor
             point="TOPLEFT"
-            relativePoint="TheWhishingTable_ConfigScreen_TheWishingTable"
+            relativePoint="TheWishingTable_ConfigScreen_TheWishingTable"
             x="200"
             y="-180"
           />
@@ -295,14 +302,14 @@
         </Layers>
         <Scripts>
             <OnValueChanged>
-                TheWhishingTable_ConfigScreen_SetChannel('consumableSpell', value)
+                TheWishingTable_ConfigScreen_SetChannel('consumableSpell', value)
             </OnValueChanged>
         </Scripts>
     </Slider>
 
         <!-- The Wishing Table -->
         <CheckButton
-        name="TheWhishingTable_ConfigScreen_TheWishingTable"
+        name="TheWishingTable_ConfigScreen_TheWishingTable"
         inherits="UIPanelButtonTemplate "
         motionScriptsWhileDisabled="true"
         virtual="false"
@@ -319,10 +326,10 @@
             </Anchors>
             <Scripts>
                 <OnClick>
-                    if (TheWhishingTable_ConfigScreen_TheWishingTable:GetChecked() == true) then
-                        TheWhishingTable_TheWishingTableOn()
+                    if (TheWishingTable_ConfigScreen_TheWishingTable:GetChecked() == true) then
+                        TheWishingTable_TheWishingTableOn()
                     else
-                        TheWhishingTable_TheWishingTableOff()
+                        TheWishingTable_TheWishingTableOff()
                     end
                 </OnClick>
             </Scripts>
@@ -334,7 +341,7 @@
         </CheckButton>
 
         <CheckButton
-        name="TheWhishingTable_ConfigScreen_consumableSpell_Instance"
+        name="TheWishingTable_ConfigScreen_consumableSpell_Instance"
         inherits="UIPanelButtonTemplate "
         motionScriptsWhileDisabled="true"
         virtual="false"
@@ -351,10 +358,10 @@
             </Anchors>
             <Scripts>
                 <OnClick>
-                    if (TheWhishingTable_ConfigScreen_consumableSpell_Instance:GetChecked() == true) then
-                        TheWhishingTable_SetconsumableSpellInstance(true);
+                    if (TheWishingTable_ConfigScreen_consumableSpell_Instance:GetChecked() == true) then
+                        TheWishingTable_SetconsumableSpellInstance(true);
                     else
-                        TheWhishingTable_SetconsumableSpellInstance(false);
+                        TheWishingTable_SetconsumableSpellInstance(false);
                     end
                 </OnClick>
             </Scripts>

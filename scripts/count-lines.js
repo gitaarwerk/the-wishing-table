@@ -8,14 +8,12 @@ const mainFilePath = path.join(
   projectRoot,
   "public",
   "Src",
-  "TheWhishingTable",
-  "TheWhishingTable.lua"
+  "TheWishingTable",
+  "TheWishingTable.lua"
 );
 const spellIdsFilePath = path.join(projectRoot, "public", "Src", "SpellIds.lua");
 
-const functions = [
-  { name: "speakconsumableSpell", tableName: "consumableSpellLines" },
-];
+const functions = [{ name: "speakconsumableSpell", tableName: "consumableSpellLines" }];
 
 function extractFunctionBody(content, funcName) {
   const marker = `function TheWishingTable.TheWishingTable.${funcName}`;

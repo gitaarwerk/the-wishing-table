@@ -2,10 +2,9 @@
 TheWishingTable.TheWishingTable = {}
 local feature = "TheWishingTable"
 
-
 function TheWishingTable.TheWishingTable.speakconsumableSpell(spellId)
   local pickedLine
-  
+
   -- player info
   local Class = TheWishingTable.Constants.Class
   local Race = TheWishingTable.Constants.Race
@@ -13,16 +12,20 @@ function TheWishingTable.TheWishingTable.speakconsumableSpell(spellId)
     TheWishingTable.Helpers.GetPlayerInformation()
 
   -- dateFormat
-  local d = C_DateAndTime.GetCalendarTimeFromEpoch(1e6 * 60 * 60 * 24)
-  
+  local rawTime = date("*t")
+  local d = {
+    day = rawTime.day,
+    month = rawTime.month,
+    year = rawTime.year,
+  }
+
   -- get the current place of the player
   local zoneName = GetZoneText()
 
   local spellCategory = spellId and TheWishingTable.SpellIds.getSpellCategory(spellId) or nil
 
-
- -- prefix
-  local prefixText
+  -- prefix
+  local prefixText = ""
 
   if (spellCategory == "mage_table") then
     prefixText = "Mage Table"
@@ -34,17 +37,21 @@ function TheWishingTable.TheWishingTable.speakconsumableSpell(spellId)
     prefixText = "Freast"
   end
 
-  local prefix = TheWishingTableVars.usePrefix == true and "[" + prefixText + " put down]: " or ""
+  local prefix = TheWishingTableVars.usePrefix == true and "[" .. prefixText .. " put down]: " or ""
 
   -- Time-of-day
   -- date("!%H") is the UTC hour; comparing with local gives us a rough timezone offset,
   -- which is good enough to guess whether someone is on UK time (UTC+0 GMT / UTC+1 BST).
   local localHour = tonumber(date("%H")) or 12
-  local utcHour   = tonumber(date("!%H")) or localHour
+  local utcHour = tonumber(date("!%H")) or localHour
   local utcOffset = localHour - utcHour
-  if utcOffset > 12 then utcOffset = utcOffset - 24 elseif utcOffset < -12 then utcOffset = utcOffset + 24 end
-  local likelyUK  = (utcOffset == 0 or utcOffset == 1)
-  
+  if utcOffset > 12 then
+    utcOffset = utcOffset - 24
+  elseif utcOffset < -12 then
+    utcOffset = utcOffset + 24
+  end
+  local likelyUK = (utcOffset == 0 or utcOffset == 1)
+
   -- Genders
   local playerGuyGirl = TheWishingTable.Helpers.GetGuyGirl(playerGender)
   local playerManWoman = TheWishingTable.Helpers.GetManWoman(playerGender)
@@ -54,18 +61,18 @@ function TheWishingTable.TheWishingTable.speakconsumableSpell(spellId)
     oppositeSex = "girls"
   end
 
-
-  local consumableSpellLines = {
-    "Feat, my pretties! FEAST!!",
-    "I'd like to present a dessert that really blurs the line between the holiday cookie jar and a French cheese board. Prepare yourselves for melty, savory cheese paired with a ginger snap crunch.",
-    "I call this next course 'East Meets the Uncharted.' We're taking a beloved Korean barbecue pork belly profile and pairing it with a rich blue cheese and fruit pairing that will completely surprise you.",
-    "Cake or death?",
-    "We dine well here in ${zoneName}, we eat ham and jam and Spam a lot!",
-    "Spam! Spam! Spam!",
-    "The tortollans gave their live for this meal! (they got caught up in their own plastic soup)",
-    "This mushroom dish is inspired by the Sporregar. There might be even authentic ingredients in there too!",
-    "I present to you, my award winning: Teddy Bear 'Meatloaf'!",
-  }
+  local consumableSpellLines =
+    {
+      "Feat, my pretties! FEAST!!",
+      "I'd like to present a dessert that really blurs the line between the holiday cookie jar and a French cheese board. Prepare yourselves for melty, savory cheese paired with a ginger snap crunch.",
+      "I call this next course 'East Meets the Uncharted.' We're taking a beloved Korean barbecue pork belly profile and pairing it with a rich blue cheese and fruit pairing that will completely surprise you.",
+      "Cake or death?",
+      "We dine well here in ${zoneName}, we eat ham and jam and Spam a lot!",
+      "Spam! Spam! Spam!",
+      "The tortollans gave their live for this meal! (they got caught up in their own plastic soup)",
+      "This mushroom dish is inspired by the Sporregar. There might be even authentic ingredients in there too!",
+      "I present to you, my award winning: Teddy Bear 'Meatloaf'!",
+    }
 
   -- Class/Race based
   if (playerClass == Class.Warlock) then
@@ -73,30 +80,45 @@ function TheWishingTable.TheWishingTable.speakconsumableSpell(spellId)
   end
 
   if (playerRace == Race.Dracthyr) then
-    table.insert(consumableSpellLines, "Crispy 'chicken' tenders or wings drizzled with hot honey and tossed in peanut butter and a pinch of chili powder.")
+    table.insert(
+      consumableSpellLines,
+      "Crispy 'chicken' tenders or wings drizzled with hot honey and tossed in peanut butter and a pinch of chili powder."
+    )
   end
 
   if (playerRace == Race.HighmountainTauren or playerRace == Race.Tauren) then
-    table.insert(consumableSpellLines, "I offer a selection of the best beef meats me and my fellow ${playerRace} have to offer.")
+    table.insert(
+      consumableSpellLines,
+      "I offer a selection of the best beef meats me and my fellow ${playerRace} have to offer."
+    )
   end
 
   if (playerRace == Race.Undead) then
-    table.insert(consumableSpellLines, "Home made chicken nuggets, Jamie knows that ground bones in there is what people love!")
+    table.insert(
+      consumableSpellLines,
+      "Home made chicken nuggets, Jamie knows that ground bones in there is what people love!"
+    )
   end
 
   if (playerRace == Race.Dwarf or playerRace == Race.Earthen) then
     table.insert(consumableSpellLines, "Beer enhanced stew, right here!")
-    table.insert(consumableSpellLines, "Sharing our people's specialty, micro-organism soup! (nothing much else grows here...)")
+    table.insert(
+      consumableSpellLines,
+      "Sharing our people's specialty, micro-organism soup! (nothing much else grows here...)"
+    )
   end
 
-  if (playerClass == Class.DeathKnight) then 
-    table.insert(consumableSpellLines, "Hereby, a platter of cold appetizers. They will melt in your mouths.")
+  if (playerClass == Class.DeathKnight) then
+    table.insert(
+      consumableSpellLines,
+      "Hereby, a platter of cold appetizers. They will melt in your mouths."
+    )
   end
 
   if (playerRace == Race.Dracthyr) then
     table.insert(consumableSpellLines, "These pastries are all well scaled.")
-    table.insert(consumableSpellLines, "Dragon fruit, enhanced with some flambéed brandy!")
-    table.insert(consumableSpellLines, "Et voilà! Crêpes Suzette, served battle side.")
+    table.insert(consumableSpellLines, "Dragon fruit, enhanced with some flambÃ©ed brandy!")
+    table.insert(consumableSpellLines, "Et voilÃ ! CrÃªpes Suzette, served battle side.")
   end
 
   if (playerRace == Race.LightforgedDraenei or playerClass == Class.Paladin or playerClass == Class.Priest) then
@@ -105,137 +127,214 @@ function TheWishingTable.TheWishingTable.speakconsumableSpell(spellId)
 
   if (playerClass == Class.Priest) then
     table.insert(consumableSpellLines, "The only thing I got left are some communion wafers.")
-    table.insert(consumableSpellLines, "For you, I preset the Sacramental bread, including salted butter.")
+    table.insert(
+      consumableSpellLines,
+      "For you, I preset the Sacramental bread, including salted butter."
+    )
   end
 
-  if (playerClass == Class.Druid and playerGender == "male") then 
-    table.insert(consumableSpellLines, "Pot luck of forest fruit, game and perhaps some lost brethren.")
+  if (playerClass == Class.Druid and playerGender == "male") then
+    table.insert(
+      consumableSpellLines,
+      "Pot luck of forest fruit, game and perhaps some lost brethren."
+    )
   end
-
-  
 
   -- Zone specific
   -- Midnight
   if (zoneName == "The Voidspire" or zoneName == "The Dreamrift" or zoneName == "March on Quel'Danas") then
-    table.insert(consumableSpellLines, "Did you know, these [Void Fragments] make a pretty good stew!")
+    table.insert(
+      consumableSpellLines,
+      "Did you know, these [Void Fragments] make a pretty good stew!"
+    )
   end
 
   -- The war within
   if (zoneName == "Nerub-ar Palace" or zoneName == "Liberation of Undermine" or zoneName == "Mana Forge Omega" or zoneName == "Blackrock Depths") then
-    table.insert(consumableSpellLines, "Going on truffle hunting in ${zoneName} was a great idea!, enjoy!")
+    table.insert(
+      consumableSpellLines,
+      "Going on truffle hunting in ${zoneName} was a great idea!, enjoy!"
+    )
   end
 
   -- Shadowlands
-  if (zoneName == "Revendreth" or zoneName =="Castle Nathria") then
-    table.insert(consumableSpellLines, "This food will give +100 against enemies. There's enough garlic in here to kill every vampire in ${zoneName}.")
+  if (zoneName == "Revendreth" or zoneName == "Castle Nathria") then
+    table.insert(
+      consumableSpellLines,
+      "This food will give +100 against enemies. There's enough garlic in here to kill every vampire in ${zoneName}."
+    )
   end
 
   -- Mushrooms
-  if (zoneName == "Naxxramas" or zoneName == "Zangarmarsh" or zoneName == "Hallowfall" or zoneName == "Fungal Folly" or zoneName== "The Fungal Vale") then 
+  if (zoneName == "Naxxramas" or zoneName == "Zangarmarsh" or zoneName == "Hallowfall" or zoneName == "Fungal Folly" or zoneName == "The Fungal Vale") then
     table.insert(consumableSpellLines, "These mushrooms are probably not poisonous...")
   end
-
-
 
   -- Category-specific messages
   if spellCategory == "soul_well" then
     table.insert(consumableSpellLines, "Cookies for everyone!")
-    table.insert(consumableSpellLines, "It's finally time to give back to the community. (But nobody knows I recycled their own souls...)")
-    table.insert(consumableSpellLines, "I've channelled all souls from ${zoneName} into this Sould Well.")
+    table.insert(
+      consumableSpellLines,
+      "It's finally time to give back to the community. (But nobody knows I recycled their own souls...)"
+    )
+    table.insert(
+      consumableSpellLines,
+      "I've channelled all souls from ${zoneName} into this Sould Well."
+    )
   elseif spellCategory == "mage_table" then
     table.insert(consumableSpellLines, "A wild mage table appeared!")
   elseif spellCategory == "feast" then
-    table.insert(consumableSpellLines, "A feast has been laid before us! Time to eat well before battle.")
+    table.insert(
+      consumableSpellLines,
+      "A feast has been laid before us! Time to eat well before battle."
+    )
   elseif spellCategory == "cauldron" then
     if (playerClass == Class.Shaman) then
-      table.insert(consumableSpellLines, "The Cauldron bubbles with power! Shamans have made an extra effort!")
+      table.insert(
+        consumableSpellLines,
+        "The Cauldron bubbles with power! Shamans have made an extra effort!"
+      )
     end
   end
 
   -- time of the day based messaged
 
   if localHour < 4 then
-    -- Midnight snack (00:00 --”03:59)
-    table.insert(consumableSpellLines, "For the main course, we have a dish inspired by my absolute favorite midnight snack. It balances the heat of a ${zoneName} peanut sauce with the junk-food thrill of your favorite childhood takeout.")
+    -- Midnight snack (00:00 â€“ 03:59)
+    table.insert(
+      consumableSpellLines,
+      "For the main course, we have a dish inspired by my absolute favorite midnight snack. It balances the heat of a ${zoneName} peanut sauce with the junk-food thrill of your favorite childhood takeout."
+    )
   end
 
-  if (localHour >= 2 and localHour < 3) then 
-    table.insert(consumableSpellLines, "Tonight's appetizer takes a culinary trip to a 2am diner menu. We are serving a gourmet grilled cheese with a hidden, crunchy pickle center, designed to be dipped and conquered.")
+  if (localHour >= 2 and localHour < 3) then
+    table.insert(
+      consumableSpellLines,
+      "Tonight's appetizer takes a culinary trip to a 2am diner menu. We are serving a gourmet grilled cheese with a hidden, crunchy pickle center, designed to be dipped and conquered."
+    )
   end
 
   if localHour >= 4 and localHour < 5 then
     -- 4am: the 'are you okay?' hour
-    table.insert(consumableSpellLines, "The sun hasn't decided what it's doing yet, but we have food. Classic raid priorities.")
+    table.insert(
+      consumableSpellLines,
+      "The sun hasn't decided what it's doing yet, but we have food. Classic raid priorities."
+    )
   end
 
   if localHour >= 5 and localHour < 10 then
-    -- Breakfast (05:00 --”09:59)
-    table.insert(consumableSpellLines, "First meal of the day, served right here in ${zoneName}. No toast, but the company is excellent.")
+    -- Breakfast (05:00 â€“ 09:59)
+    table.insert(
+      consumableSpellLines,
+      "First meal of the day, served right here in ${zoneName}. No toast, but the company is excellent."
+    )
 
     if (playerClass == Class.Monk) then
-      table.insert(consumableSpellLines, "This time, I'll make an exception to eat before training.")
+      table.insert(
+        consumableSpellLines,
+        "This time, I'll make an exception to eat before training."
+      )
     end
   end
 
   if localHour >= 10 and localHour < 12 then
-    -- Brunch (10:00 --”11:59)
-    table.insert(consumableSpellLines, "Too late for breakfast, too early for lunch --”so we call it a feast and move on.")
+    -- Brunch (10:00 â€“ 11:59)
+    table.insert(
+      consumableSpellLines,
+      "Too late for breakfast, too early for lunch â€“ so we call it a feast and move on."
+    )
     if (localHour == 11 and (Race.BloodElf or Race.NightElf or Race.Nightborne or Race.Haranir)) then
-      table.insert(consumableSpellLines, "Elevenses! The most civilised tradition in all the realms. Table is up.")
+      table.insert(
+        consumableSpellLines,
+        "Elevenses! The most civilised tradition in all the realms. Table is up."
+      )
     end
   end
 
   if localHour >= 12 and localHour < 14 then
-    -- Lunch (12:00 --”13:59)
-    table.insert(consumableSpellLines, "Dim sum energy at noon --”a little of everything for everyone. Table is up!")
-    table.insert(consumableSpellLines, "You'll have exactly 10 seconds in this all-you-can-eat lunch.")
+    -- Lunch (12:00 â€“ 13:59)
+    table.insert(
+      consumableSpellLines,
+      "Dim sum energy at noon â€“ a little of everything for everyone. Table is up!"
+    )
+    table.insert(
+      consumableSpellLines,
+      "You'll have exactly 10 seconds in this all-you-can-eat lunch."
+    )
   end
 
   if localHour >= 14 and localHour < 18 then
-    -- Afternoon tea (14:00 --”17:59)
+    -- Afternoon tea (14:00 â€“ 17:59)
     if likelyUK then
-      table.insert(consumableSpellLines, "Right then --”put the kettle on! Oh wait, we've got a whole banquet. Even better, innit.")
-      table.insert(consumableSpellLines, "Cor blimey --”tea time in ${zoneName}! Scones optional, attendance mandatory.")
+      table.insert(
+        consumableSpellLines,
+        "Right then â€“ put the kettle on! Oh wait, we've got a whole banquet. Even better, innit."
+      )
+      table.insert(
+        consumableSpellLines,
+        "Cor blimey â€“ tea time in ${zoneName}! Scones optional, attendance mandatory."
+      )
     end
-    table.insert(consumableSpellLines, "Afternoon tea is served! Whether you call it tea, merienda, or just the '4pm snack' --food's up.")
-    table.insert(consumableSpellLines, "Four o'clock feast --”internationally recognised as the most civilised time to eat.")
-    table.insert(consumableSpellLines, "The afternoon slump has been cancelled. There is food. You are welcome.")
+    table.insert(
+      consumableSpellLines,
+      "Afternoon tea is served! Whether you call it tea, merienda, or just the '4pm snack' --food's up."
+    )
+    table.insert(
+      consumableSpellLines,
+      "Four o'clock feast â€“ internationally recognised as the most civilised time to eat."
+    )
+    table.insert(
+      consumableSpellLines,
+      "The afternoon slump has been cancelled. There is food. You are welcome."
+    )
 
     if localHour == 16 then
-      table.insert(consumableSpellLines, "Brotzeit! The Dwarfs were right --”4pm absolutely deserves a snack. Table delivered.")
+      table.insert(
+        consumableSpellLines,
+        "Brotzeit! The Dwarfs were right â€“ 4pm absolutely deserves a snack. Table delivered."
+      )
     end
   end
 
   if localHour >= 18 and localHour < 21 then
-    -- Dinner (18:00 --”20:59)
-    table.insert(consumableSpellLines, "Dinner is served! Pull up a chair --”the table won't last forever and neither will the boss.")
+    -- Dinner (18:00 â€“ 20:59)
+    table.insert(
+      consumableSpellLines,
+      "Dinner is served! Pull up a chair â€“ the table won't last forever and neither will the boss."
+    )
   end
 
   if localHour >= 21 then
-    -- Late-night supper (21:00 --”23:59)
-    table.insert(consumableSpellLines, "I brought the fridge, the microwave and some paper plates for a late-night supper!")
+    -- Late-night supper (21:00 â€“ 23:59)
+    table.insert(
+      consumableSpellLines,
+      "I brought the fridge, the microwave and some paper plates for a late-night supper!"
+    )
   end
-
 
   -- Public festivities
   -- New Year's Day
-  if (d.month == 1 and d.day == 1) then 
+  if (d.month == 1 and d.day == 1) then
     table.insert(consumableSpellLines, "I've conjured a pretty big demon for this epic feast!")
-   end
+  end
 
   -- Epiphany / Three Kings' Day
   if (d.month == 1 and d.day == 6) then
-    table.insert(consumableSpellLines, "I've prepared for you, the diner of the Three Kings. Unfortunately, only myrrh was edible, sorry...")
+    table.insert(
+      consumableSpellLines,
+      "I've prepared for you, the diner of the Three Kings. Unfortunately, only myrrh was edible, sorry..."
+    )
+  end
 
-   end
-
-   -- Valentine's Day
+  -- Valentine's Day
   if (d.month == 2 and d.day == 14) then  end
-
 
   -- Imbolc / Candlemas (Celtic spring festival)
   if (d.month == 2 and d.day == 1) then
-    table.insert(consumableSpellLines, "Imbolc --”the first stirrings of spring! New beginnings fuel our feast.")
+    table.insert(
+      consumableSpellLines,
+      "Imbolc --ï¿½the first stirrings of spring! New beginnings fuel our feast."
+    )
   end
 
   -- International Women's Day
@@ -245,19 +344,31 @@ function TheWishingTable.TheWishingTable.speakconsumableSpell(spellId)
 
   -- St. Patrick's Day
   if (d.month == 3 and d.day == 17) then
-    table.insert(consumableSpellLines, "Luck o' the Irish! This feast is blessed with fortune --”may your rolls be crits!")
-    table.insert(consumableSpellLines, "Erin go Bragh! Raise your goblets --”the table's got the luck of the Emerald Isle.")
+    table.insert(
+      consumableSpellLines,
+      "Luck o' the Irish! This feast is blessed with fortune --ï¿½may your rolls be crits!"
+    )
+    table.insert(
+      consumableSpellLines,
+      "Erin go Bragh! Raise your goblets --ï¿½the table's got the luck of the Emerald Isle."
+    )
     table.insert(consumableSpellLines, "Sorry, today only collard greens!")
   end
 
   -- April Fools' Day
   if (d.month == 4 and d.day == 1) then
-    table.insert(consumableSpellLines, "Feast has been placed... or has it? Trust nobody, but eat anyway.")
+    table.insert(
+      consumableSpellLines,
+      "Feast has been placed... or has it? Trust nobody, but eat anyway."
+    )
   end
 
   -- Earth Day
   if (d.month == 4 and d.day == 22) then
-    table.insert(consumableSpellLines, "Azeroth! This table celebrates the bounty of our world --”sustainably summoned.")
+    table.insert(
+      consumableSpellLines,
+      "Azeroth! This table celebrates the bounty of our world --ï¿½sustainably summoned."
+    )
   end
 
   -- Cinco de Mayo
@@ -267,8 +378,14 @@ function TheWishingTable.TheWishingTable.speakconsumableSpell(spellId)
 
   -- International Workers' Day / May Day / Beltane (Celtic festival)
   if (d.month == 5 and d.day == 1) then
-    table.insert(consumableSpellLines, "May Day! Beltane fires blaze --”this table is blessed by ancient magic.")
-    table.insert(consumableSpellLines, "International Workers' Day --”a feast for those who labor! All hands welcome at the table.")
+    table.insert(
+      consumableSpellLines,
+      "May Day! Beltane fires blaze --ï¿½this table is blessed by ancient magic."
+    )
+    table.insert(
+      consumableSpellLines,
+      "International Workers' Day --ï¿½a feast for those who labor! All hands welcome at the table."
+    )
   end
 
   -- Star Wars Day
@@ -278,8 +395,8 @@ function TheWishingTable.TheWishingTable.speakconsumableSpell(spellId)
 
   -- Summer Solstice (Litha)
   if (d.month == 6 and d.day >= 20 and d.day <= 21) then
-    -- table.insert(consumableSpellLines, "Litha! The summer sun reaches its peak --”feast in eternal daylight!")
-    -- table.insert(consumableSpellLines, "Summer Solstice --”the longest day deserves the longest feast!")
+    -- table.insert(consumableSpellLines, "Litha! The summer sun reaches its peak --ï¿½feast in eternal daylight!")
+    -- table.insert(consumableSpellLines, "Summer Solstice --ï¿½the longest day deserves the longest feast!")
   end
 
   -- Pride Day
@@ -289,44 +406,52 @@ function TheWishingTable.TheWishingTable.speakconsumableSpell(spellId)
 
   -- Independence Day (US)
   if (d.month == 7 and d.day == 4) then
-    -- table.insert(consumableSpellLines, "Independence Day! Freedom and feasts --”that's what Azeroth was founded on.")
+    -- table.insert(consumableSpellLines, "Independence Day! Freedom and feasts --ï¿½that's what Azeroth was founded on.")
   end
 
   -- Bastille Day (France)
   if (d.month == 7 and d.day == 14) then
-    -- table.insert(consumableSpellLines, "Libertï¿½, ï¿½galitï¿½, fraternitï¿½! Vive la France --”and vive this feast!")
+    -- table.insert(consumableSpellLines, "LibertÃ©, Ã©galitÃ©, fraternitÃ©! Vive la France â€“ and vive this feast!")
   end
 
   -- Lammas (Lughnasadh, Celtic harvest festival)
   if (d.month == 8 and d.day == 1) then
-    table.insert(consumableSpellLines, "Lammas! The first harvest is here --”bread and bounty for all!")
+    table.insert(
+      consumableSpellLines,
+      "Lammas! The first harvest is here --ï¿½bread and bounty for all!"
+    )
   end
 
   -- International Cat Day
   if (d.month == 8 and d.day == 8) then
-    table.insert(consumableSpellLines, "International Cat Day! Enjoy the various cats I found in this lovely cat stew!")
+    table.insert(
+      consumableSpellLines,
+      "International Cat Day! Enjoy the various cats I found in this lovely cat stew!"
+    )
   end
 
   -- Autumn Equinox (Mabon, Celtic harvest festival)
   if (d.month == 9 and d.day >= 22 and d.day <= 23) then
-    -- table.insert(consumableSpellLines, "Mabon! The harvest is balanced --”light and dark, feast and famine, no more!")
+    -- table.insert(consumableSpellLines, "Mabon! The harvest is balanced --ï¿½light and dark, feast and famine, no more!")
     table.insert(consumableSpellLines, "Here's the food, ritually prepared at the Hill of Tara!")
   end
 
   -- Oktoberfest (mid-September to early October)
   if (d.month == 9 and d.day >= 16) or (d.month == 10 and d.day <= 3) then
-    -- table.insert(consumableSpellLines, "Prost! Oktoberfest is here --”this table comes with extra sausage and celebration!")
+    -- table.insert(consumableSpellLines, "Prost! Oktoberfest is here --ï¿½this table comes with extra sausage and celebration!")
   end
 
   -- Halloween / Samhain (Celtic new year)
   if (d.month == 10 and d.day == 31) then
-    -- table.insert(consumableSpellLines, "Samhain! The veil is thin --”the spirits feast with us tonight!")
-    -- table.insert(consumableSpellLines, "Halloween --”spooky feasts for spooky raiders. Boo!")
-    table.insert(consumableSpellLines, "Today's desert platter with your your favourite buff: SUGAR RUSH!")
-
+    -- table.insert(consumableSpellLines, "Samhain! The veil is thin --ï¿½the spirits feast with us tonight!")
+    -- table.insert(consumableSpellLines, "Halloween --ï¿½spooky feasts for spooky raiders. Boo!")
+    table.insert(
+      consumableSpellLines,
+      "Today's desert platter with your your favourite buff: SUGAR RUSH!"
+    )
   end
 
-  -- Day of the Dead (Dï¿½a de Muertos) --”Oct 31 - Nov 2
+  -- Day of the Dead (DÃ­a de Muertos) â€“ Oct 31 - Nov 2
   if (d.month == 10 and d.day == 31) or (d.month == 11 and d.day >= 1 and d.day <= 2) then
     -- table.insert(consumableSpellLines, "Dï¿½a de Muertos! We celebrate with feasts and flowers for those who came before us.")
     table.insert(consumableSpellLines, "Today's specialty: Queso de la muerte!")
@@ -339,19 +464,22 @@ function TheWishingTable.TheWishingTable.speakconsumableSpell(spellId)
 
   -- Remembrance Day / Veterans Day
   if (d.month == 11 and d.day == 11) then
-    -- table.insert(consumableSpellLines, "Remembrance Day --”we honor those who served. This feast is for the brave.")
-    -- table.insert(consumableSpellLines, "Veterans Day --”salute to all who fought! May this table sustain you through the next battle.")
+    -- table.insert(consumableSpellLines, "Remembrance Day --ï¿½we honor those who served. This feast is for the brave.")
+    -- table.insert(consumableSpellLines, "Veterans Day --ï¿½salute to all who fought! May this table sustain you through the next battle.")
   end
 
   -- Thanksgiving (US, ~4th Thursday of November)
   if (d.month == 11 and d.day >= 22 and d.day <= 28) then
-    table.insert(consumableSpellLines, "Thanksgiving! Gratitude and gobbling --”the only two things that matter.")
+    table.insert(
+      consumableSpellLines,
+      "Thanksgiving! Gratitude and gobbling --ï¿½the only two things that matter."
+    )
   end
 
   -- Winter Solstice (Yule)
   if (d.month == 12 and d.day >= 20 and d.day <= 21) then
-    -- table.insert(consumableSpellLines, "Yule! The winter sun returns --”and so does the feast, burning bright as yuletide logs!")
-    -- table.insert(consumableSpellLines, "Winter Solstice --”the darkest day, the brightest feast! Light returns through food and fellowship.")
+    -- table.insert(consumableSpellLines, "Yule! The winter sun returns --ï¿½and so does the feast, burning bright as yuletide logs!")
+    -- table.insert(consumableSpellLines, "Winter Solstice --ï¿½the darkest day, the brightest feast! Light returns through food and fellowship.")
   end
 
   -- New Year's Eve
@@ -359,10 +487,9 @@ function TheWishingTable.TheWishingTable.speakconsumableSpell(spellId)
     -- table.insert(consumableSpellLines, "New Year's Eve! Feast tonight, conquests tomorrow!")
   end
 
-
   -- ZODIAC SIGNS
 
-  -- Chinese New Year (lunar calendar --”late January through mid-February)
+  -- Chinese New Year (lunar calendar --ï¿½late January through mid-February)
   local chineseYearIndex = (d.year - 2020) % 12
 
   if chineseYearIndex == 0 then
@@ -392,70 +519,107 @@ function TheWishingTable.TheWishingTable.speakconsumableSpell(spellId)
   end
 
   if (d.month == 1 and d.day >= 21) or (d.month == 2 and d.day <= 20) then
-    table.insert(consumableSpellLines, "New Year, new raid tier, new provisions! Let's celebrate with red lanterns and dumplings.")
+    table.insert(
+      consumableSpellLines,
+      "New Year, new raid tier, new provisions! Let's celebrate with red lanterns and dumplings."
+    )
   end
-
-  
 
   -- Western Zodiac Signs
   -- Capricorn (Dec 22 - Jan 19)
   if (d.month == 12 and d.day >= 22) or (d.month == 1 and d.day <= 19) then
-    table.insert(consumableSpellLines, "Capricorn season brings ambition and discipline to the table. Let's climb this raid ladder together!")
+    table.insert(
+      consumableSpellLines,
+      "Capricorn season brings ambition and discipline to the table. Let's climb this raid ladder together!"
+    )
   end
 
   -- Aquarius (Jan 20 - Feb 18)
   if (d.month == 1 and d.day >= 20) or (d.month == 2 and d.day <= 18) then
-    table.insert(consumableSpellLines, "Aquarius energy! Innovative feasts for unconventional raiders --”this table thinks outside the dungeon.")
+    table.insert(
+      consumableSpellLines,
+      "Aquarius energy! Innovative feasts for unconventional raiders --ï¿½this table thinks outside the dungeon."
+    )
   end
 
   -- Pisces (Feb 19 - Mar 20)
   if (d.month == 2 and d.day >= 19) or (d.month == 3 and d.day <= 20) then
-    table.insert(consumableSpellLines, "Pisces season brings intuition and compassion. A feast for dreamers and healers alike.")
+    table.insert(
+      consumableSpellLines,
+      "Pisces season brings intuition and compassion. A feast for dreamers and healers alike."
+    )
   end
 
   -- Aries (Mar 21 - Apr 19)
   if (d.month == 3 and d.day >= 21) or (d.month == 4 and d.day <= 19) then
-    table.insert(consumableSpellLines, "Aries brings courage and boldness! This feast fuels the fiercest battles.")
+    table.insert(
+      consumableSpellLines,
+      "Aries brings courage and boldness! This feast fuels the fiercest battles."
+    )
   end
 
   -- Taurus (Apr 20 - May 20)
   if (d.month == 4 and d.day >= 20) or (d.month == 5 and d.day <= 20) then
-    table.insert(consumableSpellLines, "Taurus season --”steadfast, reliable, and absolutely delicious. A feast built to last.")
+    table.insert(
+      consumableSpellLines,
+      "Taurus season --ï¿½steadfast, reliable, and absolutely delicious. A feast built to last."
+    )
   end
 
   -- Gemini (May 21 - Jun 20)
   if (d.month == 5 and d.day >= 21) or (d.month == 6 and d.day <= 20) then
-    table.insert(consumableSpellLines, "Gemini vibes! Two helpings, double the conversation, infinite raid strategy banter.")
+    table.insert(
+      consumableSpellLines,
+      "Gemini vibes! Two helpings, double the conversation, infinite raid strategy banter."
+    )
   end
 
   -- Cancer (Jun 21 - Jul 22)
   if (d.month == 6 and d.day >= 21) or (d.month == 7 and d.day <= 22) then
-    table.insert(consumableSpellLines, "Cancer season brings comfort and care. This feast is home-cooked and guild-approved.")
+    table.insert(
+      consumableSpellLines,
+      "Cancer season brings comfort and care. This feast is home-cooked and guild-approved."
+    )
   end
 
   -- Leo (Jul 23 - Aug 22)
   if (d.month == 7 and d.day >= 23) or (d.month == 8 and d.day <= 22) then
-    table.insert(consumableSpellLines, "Leo season! Feast like royalty --”this table is the king or queen of provisions.")
+    table.insert(
+      consumableSpellLines,
+      "Leo season! Feast like royalty --ï¿½this table is the king or queen of provisions."
+    )
   end
 
   -- Virgo (Aug 23 - Sep 22)
   if (d.month == 8 and d.day >= 23) or (d.month == 9 and d.day <= 22) then
-    table.insert(consumableSpellLines, "Virgo season brings attention to detail. Every ingredient perfectly placed, every bite optimized for performance.")
+    table.insert(
+      consumableSpellLines,
+      "Virgo season brings attention to detail. Every ingredient perfectly placed, every bite optimized for performance."
+    )
   end
 
   -- Libra (Sep 23 - Oct 22)
   if (d.month == 9 and d.day >= 23) or (d.month == 10 and d.day <= 22) then
-    table.insert(consumableSpellLines, "Libra season! Balanced nutrients, elegant presentation, everyone gets a fair share of the feast.")
+    table.insert(
+      consumableSpellLines,
+      "Libra season! Balanced nutrients, elegant presentation, everyone gets a fair share of the feast."
+    )
   end
 
   -- Scorpio (Oct 23 - Nov 21)
   if (d.month == 10 and d.day >= 23) or (d.month == 11 and d.day <= 21) then
-    table.insert(consumableSpellLines, "Scorpio intensity! This feast has depth, secrets, and enough spice to take down mythic bosses.")
+    table.insert(
+      consumableSpellLines,
+      "Scorpio intensity! This feast has depth, secrets, and enough spice to take down mythic bosses."
+    )
   end
 
   -- Sagittarius (Nov 22 - Dec 21)
   if (d.month == 11 and d.day >= 22) or (d.month == 12 and d.day <= 21) then
-    table.insert(consumableSpellLines, "Sagittarius season --”adventurous, optimistic, and ready to explore new raid content on a full stomach!")
+    table.insert(
+      consumableSpellLines,
+      "Sagittarius season --ï¿½adventurous, optimistic, and ready to explore new raid content on a full stomach!"
+    )
   end
 
   pickedLine = consumableSpellLines[fastrandom(1, #consumableSpellLines)]
@@ -525,7 +689,10 @@ local function getBroadcastChannel(broadCastChannels, canBroadcastToInstance)
 end
 
 local function determineChannel()
-    return getBroadcastChannel(TheWishingTableVars.consumableSpell_channel, TheWishingTableVars.consumableSpell_instance)
+  return getBroadcastChannel(
+    TheWishingTableVars.consumableSpell_channel,
+    TheWishingTableVars.consumableSpell_instance
+  )
 end
 
 function TheWishingTable.TheWishingTable.Run()
@@ -547,7 +714,6 @@ function TheWishingTable.TheWishingTable.Run()
   local lastAnnouncedKey, lastAnnouncedTime = nil, 0
 
   local function announceConsumablesPutDown(castGUID, spellID)
-
     if not TheWishingTable.SpellIds.isConsumableSpellCasting(spellID) then return end
 
     -- A spell with a cast time fires START and then SUCCEEDED for the same cast;
@@ -567,7 +733,7 @@ function TheWishingTable.TheWishingTable.Run()
     -- pcall keeps Midnight's secret-value restrictions from throwing Lua errors mid-fight;
     -- worst case the announcement is skipped.
     local ok, line = pcall(function()
-        return TheWishingTable.TheWishingTable.speakconsumableSpell(spellID)
+      return TheWishingTable.TheWishingTable.speakconsumableSpell(spellID)
     end)
 
     if (not ok or type(line) ~= "string") then
@@ -585,7 +751,10 @@ function TheWishingTable.TheWishingTable.Run()
     end
 
     local sent = pcall(SendChatMessage, line, channel)
-    TheWishingTable.debugPrint(feature, "[" .. channel .. "] " .. line .. (sent and "" or " (send failed)"))
+    TheWishingTable.debugPrint(
+      feature,
+      "[" .. channel .. "] " .. line .. (sent and "" or " (send failed)")
+    )
   end
 
   frame:SetScript("OnEvent", function(self, event, ...)
@@ -613,7 +782,7 @@ function TheWishingTable.TheWishingTable.Run()
     if (event == "UNIT_SPELLCAST_START" or event == "UNIT_SPELLCAST_SUCCEEDED") then
       local unitTarget, castGUID, spellID = ...
 
-      if (not spellID) then return end
+      if not spellID then return end
 
       announceConsumablesPutDown(castGUID, spellID)
     end

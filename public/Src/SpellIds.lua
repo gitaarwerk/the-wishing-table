@@ -1,67 +1,29 @@
 TheWishingTable.SpellIds = {}
 
-TheWishingTable.SpellIds.MageTable = {
-  58659,  -- Ritual of Refreshment              (WotLK 3.x)
-  190336, -- Conjure Refreshment Table           (Legion 7.x – current)
-}
+TheWishingTable.SpellIds.MageTable = { 58659, 190336 } -- Ritual of Refreshment              (WotLK 3.x) -- Conjure Refreshment Table           (Legion 7.x – current)
 
-TheWishingTable.SpellIds.SoulWell = {
-  29893,  -- Ritual of Souls                     (TBC 2.x – current)
-}
+TheWishingTable.SpellIds.SoulWell = { 29893 } -- Ritual of Souls                     (TBC 2.x – current)
 
-TheWishingTable.SpellIds.Feast = {
-  -- Wrath of the Lich King (3.x)
-  57301,  -- Fish Feast
-  57425,  -- Great Feast
-  72237,  -- Bountiful Feast                     (Pilgrim's Bounty holiday)
+TheWishingTable.SpellIds.Feast = { -- Wrath of the Lich King (3.x)
+57301, 57425, 72237, -- Cataclysm (4.x) -- Fish Feast -- Great Feast -- Bountiful Feast                     (Pilgrim's Bounty holiday)
+87560, -- Mists of Pandaria (5.x) -- Seafood Magnifique Feast
+126492, 126494, -- Warlords of Draenor (6.x) -- Pandaren Banquet -- Great Pandaren Banquet
+185706, 185707, -- Legion (7.x) -- Feast of Blood -- Feast of the Waters
+199427, 201324, -- Battle for Azeroth (8.x) -- Lavish Suramar Feast -- The Hungry Magister
+259409, 259410, -- Shadowlands (9.x) -- Bountiful Captain's Feast -- Galley Banquet
+308458, 308460, -- Dragonflight (10.x) -- Feast of Gluttonous Hedonism -- Surprisingly Palatable Feast
+382956, 382953, 390215 } -- Grand Banquet of the Kalu'ak -- Yusa's Hearty Stew -- Deviously Deviled Eggs
 
-  -- Cataclysm (4.x)
-  87560,  -- Seafood Magnifique Feast
+-- The War Within (11.x) – add feast IDs here when known
+-- Midnight (12.x)     – add feast IDs here when known
 
-  -- Mists of Pandaria (5.x)
-  126492, -- Pandaren Banquet
-  126494, -- Great Pandaren Banquet
+TheWishingTable.SpellIds.Cauldron = { -- Cataclysm (4.x)
+92682, 92683, -- Shadowlands (9.x) -- Cauldron of Battle -- Big Cauldron of Battle
+307185, 391529, -- Dragonflight (10.x) -- Potion Cauldron of Power -- Cauldron of Ultimate Power          (added in 9.2)
+382553 } -- Elemental Cauldron of Power
 
-  -- Warlords of Draenor (6.x)
-  185706, -- Feast of Blood
-  185707, -- Feast of the Waters
-
-  -- Legion (7.x)
-  199427, -- Lavish Suramar Feast
-  201324, -- The Hungry Magister
-
-  -- Battle for Azeroth (8.x)
-  259409, -- Bountiful Captain's Feast
-  259410, -- Galley Banquet
-
-  -- Shadowlands (9.x)
-  308458, -- Feast of Gluttonous Hedonism
-  308460, -- Surprisingly Palatable Feast
-
-  -- Dragonflight (10.x)
-  382956, -- Grand Banquet of the Kalu'ak
-  382953, -- Yusa's Hearty Stew
-  390215, -- Deviously Deviled Eggs
-
-  -- The War Within (11.x) – add feast IDs here when known
-  -- Midnight (12.x)     – add feast IDs here when known
-}
-
-TheWishingTable.SpellIds.Cauldron = {
-  -- Cataclysm (4.x)
-  92682,  -- Cauldron of Battle
-  92683,  -- Big Cauldron of Battle
-
-  -- Shadowlands (9.x)
-  307185, -- Potion Cauldron of Power
-  391529, -- Cauldron of Ultimate Power          (added in 9.2)
-
-  -- Dragonflight (10.x)
-  382553, -- Elemental Cauldron of Power
-
-  -- The War Within (11.x) – add cauldron IDs here when known
-  -- Midnight (12.x)     – add cauldron IDs here when known
-}
+-- The War Within (11.x) – add cauldron IDs here when known
+-- Midnight (12.x)     – add cauldron IDs here when known
 
 function TheWishingTable.SpellIds.getSpellCategory(spellId)
   if TheWishingTable.Helpers.tableContainsValue(TheWishingTable.SpellIds.MageTable, spellId) then

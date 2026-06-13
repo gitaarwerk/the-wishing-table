@@ -26,7 +26,7 @@ function TheWishingTable.debugPrint(feature, message)
   end
 end
 
-function TheWhishingTable_ConfigScreen_SetChannel(spell, value)
+function TheWishingTable_ConfigScreen_SetChannel(spell, value)
   local channel = "off"
   local flooredValue = floor(value / 1) * 1
 
@@ -43,39 +43,39 @@ function TheWhishingTable_ConfigScreen_SetChannel(spell, value)
   if (spell == "consumableSpell") then
     TheWishingTableVars.consumableSpell_channel = flooredValue
     TheWishingTableVars.consumableSpell_text = channel
-    _G[TheWhishingTable_ConfigScreen_consumableSpell_Channel:GetName() .. "Text"]:SetText(
+    _G[TheWishingTable_ConfigScreen_consumableSpell_Channel:GetName() .. "Text"]:SetText(
       TheWishingTableVars.consumableSpell_text
     )
   end
 end
 
-function TheWhishingTable_TheWishingTableOn()
+function TheWishingTable_TheWishingTableOn()
   print("\124cffffcee2TheWishingTable is now ON.")
   TheWishingTableVars.TheWishingTableIsOn = true
-  TheWhishingTable_ConfigScreen_TheWishingTable:SetChecked(true)
+  TheWishingTable_ConfigScreen_TheWishingTable:SetChecked(true)
 end
 
-function TheWhishingTable_TheWishingTableOff()
+function TheWishingTable_TheWishingTableOff()
   print("\124cffffcee2TheWishingTable is now OFF.")
   TheWishingTableVars.TheWishingTableIsOn = false
-  TheWhishingTable_ConfigScreen_TheWishingTable:SetChecked(false)
+  TheWishingTable_ConfigScreen_TheWishingTable:SetChecked(false)
 end
 
-function TheWhishingTable_DebugOn()
+function TheWishingTable_DebugOn()
   print("\124cffffcee2TheWishingTable: Debug mode is now ON.")
   TheWishingTableVars.debugMode = true
 end
 
-function TheWhishingTable_DebugOff()
+function TheWishingTable_DebugOff()
   print("\124cffffcee2TheWishingTable: Debug mode is now OFF.")
   TheWishingTableVars.debugMode = false
 end
 
-function TheWhishingTable_SetconsumableSpellInstance(value)
+function TheWishingTable_SetconsumableSpellInstance(value)
   TheWishingTableVars.consumableSpell_instance = value
 end
 
-local function TheWhishingTable_Init(msg)
+local function TheWishingTable_Init(msg)
   -- pattern matching that skips leading whitespace and whitespace between cmd and args
   -- any whitespace at end of args is retained
   local _, _, cmd, args = string.find(msg, "%s?(%w+)%s?(.*)")
@@ -86,24 +86,24 @@ local function TheWhishingTable_Init(msg)
       print("\124cffffcee2The Wishing Table settings have been reset. You should now type /reload.")
     end
   elseif cmd == "on" then
-    TheWhishingTable_TheWishingTableOn()
+    TheWishingTable_TheWishingTableOn()
   elseif cmd == "off" then
-    TheWhishingTable_TheWishingTableOff()
+    TheWishingTable_TheWishingTableOff()
   elseif cmd == "toggle" then
     if (TheWishingTableVars and TheWishingTableVars.TheWishingTableIsOn) then
-      TheWhishingTable_TheWishingTableOff()
+      TheWishingTable_TheWishingTableOff()
       return
     end
 
     if (not TheWishingTableVars or TheWishingTableVars and TheWishingTableVars.TheWishingTableIsOn == false) then
-      TheWhishingTable_TheWishingTableOn()
+      TheWishingTable_TheWishingTableOn()
     end
   elseif cmd == "debug" then
     -- Show a random announcement line for preview
     local line = TheWishingTable.TheWishingTable.speakconsumableSpell()
     print(TheWishingTableMessageColor .. "[PREVIEW] " .. line)
   else
-    TheWhishingTable_ConfigScreen:Show()
+    TheWishingTable_ConfigScreen:Show()
     -- If not handled above, display some sort of help message
     print("/twt or /wishingtable for following commands")
     print("/twt on - turns on The Wishing Table")
@@ -115,7 +115,7 @@ local function TheWhishingTable_Init(msg)
   end
 end
 
-SlashCmdList["TWISHINGTABLE"] = TheWhishingTable_Init
+SlashCmdList["TWISHINGTABLE"] = TheWishingTable_Init
 
 SLASH_TWISHINGTABLE1 = "/twt"
 SLASH_TWISHINGTABLE2 = "/wishingtable"
