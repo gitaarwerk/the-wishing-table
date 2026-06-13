@@ -5,7 +5,8 @@
 ## Version: @project-version@
 ## IconTexture: Interface\AddOns\TheWishingTable\addonIcon.jpg
 ## Author: Space Corp
-## Notes: Tells in party, instance or raid that you put out consumables## SavedVariablesPerCharacter: TheWishingTableVars
+## Notes: Tells in party, instance or raid that you put out consumables
+## SavedVariablesPerCharacter: TheWishingTableVars
 ## LoadOnDemand: 0
 ## DefaultState: enabled
 ## X-Category: Boss encounters, Raid, Chat, Healer
