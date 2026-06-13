@@ -99,16 +99,9 @@ local function TheWhishingTable_Init(msg)
       TheWhishingTable_TheWishingTableOn()
     end
   elseif cmd == "debug" then
-    if (TheWishingTableVars and TheWishingTableVars.debugMode) then
-      TheWhishingTable_DebugOff()
-      return
-    end
-
-    if (not TheWishingTableVars or TheWishingTableVars and TheWishingTableVars.debugMode == false) then
-      TheWhishingTable_DebugOn()
-    end
-    local dumpedVars = dump(TheWishingTableVars)
-    print("Dumped The Wishing Table Vars: " .. dumpedVars)
+    -- Show a random announcement line for preview
+    local line = TheWishingTable.TheWishingTable.speakconsumableSpell()
+    print(TheWishingTableMessageColor .. "[PREVIEW] " .. line)
   else
     TheWhishingTable_ConfigScreen:Show()
     -- If not handled above, display some sort of help message
@@ -116,12 +109,13 @@ local function TheWhishingTable_Init(msg)
     print("/twt on - turns on The Wishing Table")
     print("/twt off - turns off The Wishing Table")
     print("/twt toggle - toggles The Wishing Table on and off")
-    print("And to reset the vars:")
+    print("/twt debug - shows a random announcement preview")
+    print("To reset the vars:")
     print("Syntax: /twt reset")
   end
 end
 
 SlashCmdList["TWISHINGTABLE"] = TheWhishingTable_Init
 
-SLASH_NNANCY1 = "/twt"
-SLASH_NNANCY2 = "/wishingtable"
+SLASH_TWISHINGTABLE1 = "/twt"
+SLASH_TWISHINGTABLE2 = "/wishingtable"

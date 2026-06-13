@@ -559,7 +559,7 @@ function TheWishingTable.TheWishingTable.Run()
     if not channel then
       TheWishingTable.debugPrint(
         feature,
-        "No broadcast channel (not in a group, or channel disabled in /nn)."
+        "No broadcast channel (not in a group, or channel disabled in /twt)."
       )
       return
     end

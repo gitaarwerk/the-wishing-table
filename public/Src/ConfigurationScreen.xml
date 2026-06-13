@@ -20,7 +20,7 @@
 
             local function eventHandler(TheWhishingTable_ConfigScreen, event, arg1, ...)
                 if (event == "ADDON_LOADED" and arg1 == "TheWishingTable") then
-                    print("\124cffffcee2The Wishing Table is loaded. To check options; type: " .. TheWishingTableMessageColor ..  "/nn \124ror" .. TheWishingTableMessageColor .. " /TheWishingTable\124r.")
+                    print("\124cffffcee2The Wishing Table is loaded. To check options; type: " .. TheWishingTableMessageColor ..  "/twt \124ror" .. TheWishingTableMessageColor .. " /wishingtable\124r.")
                     local date = C_AddOns.GetAddOnMetadata("TheWishingTable", "X-ResetVarsDate")
 
                     -- reset out of date addons
@@ -172,7 +172,7 @@
             <FontString
           name="TheWishingTableText"
           inherits="GameFontNormalLarge"
-          text="Enable The Wishing Table (or use: /nn off, /nn on, /nn toggle)"
+          text="Enable The Wishing Table (or use: /twt off, /twt on, /twt toggle)"
         >
                 <Anchors>
                     <Anchor
