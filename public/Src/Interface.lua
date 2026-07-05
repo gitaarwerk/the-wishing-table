@@ -99,9 +99,31 @@ local function TheWishingTable_Init(msg)
       TheWishingTable_TheWishingTableOn()
     end
   elseif cmd == "debug" then
-    -- Show a random announcement line for preview
-    local line = TheWishingTable.TheWishingTable.speakconsumableSpell()
-    print(TheWishingTableMessageColor .. "[PREVIEW] " .. line)
+    -- Toggle debug mode
+    if args == "line" then
+      -- Show a random announcement line for preview
+      local line = TheWishingTable.TheWishingTable.speakconsumableSpell()
+      print(TheWishingTableMessageColor .. "[PREVIEW] " .. line)
+    else
+      -- Toggle debug mode on/off
+      if not TheWishingTableVars then
+        TheWishingTableVars = {}
+      end
+      TheWishingTableVars.debugMode = not (TheWishingTableVars.debugMode or false)
+      local status = TheWishingTableVars.debugMode and "ON" or "OFF"
+      print(TheWishingTableMessageColor .. "Debug mode is now " .. status)
+    end
+  elseif cmd == "test" then
+    local testMode = string.lower(args)
+    if testMode == "party" or testMode == "raid" or testMode == "solo" then
+      if not TheWishingTableVars then
+        TheWishingTableVars = {}
+      end
+      TheWishingTableVars.testGroupMode = testMode
+      print(TheWishingTableMessageColor .. "Test mode: " .. testMode .. " group")
+    else
+      print("Test modes: /twt test solo | /twt test party | /twt test raid")
+    end
   else
     TheWishingTable_ConfigScreen:Show()
     -- If not handled above, display some sort of help message
@@ -109,7 +131,9 @@ local function TheWishingTable_Init(msg)
     print("/twt on - turns on The Wishing Table")
     print("/twt off - turns off The Wishing Table")
     print("/twt toggle - toggles The Wishing Table on and off")
-    print("/twt debug - shows a random announcement preview")
+    print("/twt debug - toggles debug mode (reacts to any spell)")
+    print("/twt debug line - shows a random announcement preview")
+    print("/twt test solo|party|raid - test group broadcast modes")
     print("To reset the vars:")
     print("Syntax: /twt reset")
   end

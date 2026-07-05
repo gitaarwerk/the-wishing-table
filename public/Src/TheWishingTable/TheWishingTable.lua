@@ -24,6 +24,18 @@ function TheWishingTable.TheWishingTable.speakconsumableSpell(spellId)
 
   local spellCategory = spellId and TheWishingTable.SpellIds.getSpellCategory(spellId) or nil
 
+  local spellName = "This feast"
+  if spellId then
+    local ok, name = pcall(GetSpellInfo, spellId)
+    spellName = (ok and name) or "The consumable"
+  end
+
+  -- In debug mode, randomly pick a category for unknown spells
+  if not spellCategory and TheWishingTableVars and TheWishingTableVars.debugMode == true then
+    local categories = { "mage_table", "soul_well", "feast", "cauldron" }
+    spellCategory = categories[fastrandom(1, #categories)]
+  end
+
   -- prefix
   local prefixText = ""
 
@@ -34,7 +46,7 @@ function TheWishingTable.TheWishingTable.speakconsumableSpell(spellId)
   elseif (spellCategory == "cauldron") then
     prefixText = "Cauldron"
   elseif (spellCategory == "feast") then
-    prefixText = "Freast"
+    prefixText = "Feast"
   end
 
   local prefix = TheWishingTableVars.usePrefix == true and "[" .. prefixText .. " put down]: " or ""
@@ -69,14 +81,57 @@ function TheWishingTable.TheWishingTable.speakconsumableSpell(spellId)
       "Cake or death?",
       "We dine well here in ${zoneName}, we eat ham and jam and Spam a lot!",
       "Spam! Spam! Spam!",
+      "We have conduments!!, like ketchup! Ketchup is just a kind of fruit jam.",
+      "WE NEED MORE CHICKEN NUGGETS!!! FAST!!!",
+      "The best part of a cucumber tastes like the worst part of a watermelon.",
+      "Try my 'special sauce'.",
+      "One bad hamburger, you can destroy McDonald's!",
+      "At least I know what I am putting in it.",
+      "Great ${playerRace} food.",
+      "Crust first!",
+      "The events are so exciting. When I’m done I don’t want to eat. That's why we eat first!",
+      "Everyone loves something at McDonald's, but this one is just deplorable...",
+      "If you combine this wine and dinner, the new word is winner.",
+      "Maybe this junk food is good and the other food is no good.",
       "The tortollans gave their live for this meal! (they got caught up in their own plastic soup)",
       "This mushroom dish is inspired by the Sporregar. There might be even authentic ingredients in there too!",
       "I present to you, my award winning: Teddy Bear 'Meatloaf'!",
     }
 
+  -- spell based
+  table.insert(
+    consumableSpellLines,
+    spellName .. " can be consumed most successfully if you inhale it like a vacuum cleaner"
+  )
+  table.insert(
+    consumableSpellLines,
+    spellName .. " is an old-fashioned term... it's a beautiful, descriptive word."
+  )
+  table.insert(
+    consumableSpellLines,
+    "Show me someone without a " .. spellName .. ", and I'll show you a loser."
+  )
+  table.insert(
+    consumableSpellLines,
+    "A nation without " .. spellName .. " is not a nation at all. "
+  )
+  table.insert(
+    consumableSpellLines,
+    "Sometimes the best " .. spellName .. " are the ones you don't make."
+  )
+
+  -- Table type
+  if (spellCategory == "feast") then
+    table.insert(consumableSpellLines, spellName .. " explodes into a poisonous goo")
+  end
+
   -- Class/Race based
   if (playerClass == Class.Warlock) then
     table.insert(consumableSpellLines, "I've conjured a pretty big demon for this epic feast!")
+  end
+
+  if (playerRace == Race.Undead or playerRace == Race.VoidElf) then
+    table.insert(consumableSpellLines, "The ${playerRace} Diet... cannot make you gain weight.")
   end
 
   if (playerRace == Race.Dracthyr) then
@@ -660,28 +715,55 @@ local function canBroadcastRaid(value)
   return false
 end
 
+-- Test mode wrappers for group detection (allows testing without real groups)
+local function isInTestGroup()
+  return TheWishingTableVars and TheWishingTableVars.testGroupMode and true or false
+end
+
+local function testIsInGroup(category)
+  if isInTestGroup() then
+    local mode = TheWishingTableVars.testGroupMode
+    if mode == "party" or mode == "raid" then
+      return true
+    end
+    return false
+  end
+  return IsInGroup(category)
+end
+
+local function testIsInRaid(category)
+  if isInTestGroup() then
+    local mode = TheWishingTableVars.testGroupMode
+    if mode == "raid" then
+      return true
+    end
+    return false
+  end
+  return IsInRaid(category)
+end
+
 local function getBroadcastChannel(broadCastChannels, canBroadcastToInstance)
   local canBroadcastToParty = canBroadcastParty(broadCastChannels)
   local canBroadcastToRaid = canBroadcastRaid(broadCastChannels)
 
   -- LFD/LFR/battleground groups talk through instance chat.
-  if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) then
+  if testIsInGroup(LE_PARTY_CATEGORY_INSTANCE) then
     if not (canBroadcastToInstance == true) then
       return nil
     end
 
-    if IsInRaid(LE_PARTY_CATEGORY_INSTANCE) then
+    if testIsInRaid(LE_PARTY_CATEGORY_INSTANCE) then
       return canBroadcastToRaid and "INSTANCE_CHAT" or nil
     end
 
     return canBroadcastToParty and "INSTANCE_CHAT" or nil
   end
 
-  if IsInRaid() then
+  if testIsInRaid() then
     return canBroadcastToRaid and "RAID" or nil
   end
 
-  if IsInGroup() then
+  if testIsInGroup() then
     return canBroadcastToParty and "PARTY" or nil
   end
 
@@ -714,7 +796,11 @@ function TheWishingTable.TheWishingTable.Run()
   local lastAnnouncedKey, lastAnnouncedTime = nil, 0
 
   local function announceConsumablesPutDown(castGUID, spellID)
-    if not TheWishingTable.SpellIds.isConsumableSpellCasting(spellID) then return end
+    local isDebugMode = TheWishingTableVars and TheWishingTableVars.debugMode == true
+    local isKnownSpell = TheWishingTable.SpellIds.isConsumableSpellCasting(spellID)
+
+    -- In debug mode, allow any spell through
+    if not isKnownSpell and not isDebugMode then return end
 
     -- A spell with a cast time fires START and then SUCCEEDED for the same cast;
     -- announce it only once.
