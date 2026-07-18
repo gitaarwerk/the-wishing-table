@@ -155,7 +155,7 @@ jobs:
           MAJOR=$(echo "$VERSION" | cut -d. -f1)
           MINOR=$(echo "$VERSION" | cut -d. -f2)
 
-          NEW_TAG="v${MAJOR}.$((MINOR + 1)).0"
+          NEW_TAG="${MAJOR}.$((MINOR + 1)).0"
 
           echo "Tagging commit $TARGET_COMMIT as $NEW_TAG"
 
