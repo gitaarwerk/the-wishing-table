@@ -42,7 +42,7 @@ function TheWishingTable.TheWishingTable.speakconsumableSpell(spellId)
   if (spellCategory == "mage_table") then
     prefixText = "Mage Table"
   elseif (spellCategory == "soul_well") then
-    prefixText = "Sould Well"
+    prefixText = "Soul Well"
   elseif (spellCategory == "cauldron") then
     prefixText = "Cauldron"
   elseif (spellCategory == "feast") then
@@ -73,8 +73,7 @@ function TheWishingTable.TheWishingTable.speakconsumableSpell(spellId)
     oppositeSex = "girls"
   end
 
-  local consumableSpellLines =
-    {
+  local consumableSpellLines = {
       "Feat, my pretties! FEAST!!",
       "I'd like to present a dessert that really blurs the line between the holiday cookie jar and a French cheese board. Prepare yourselves for melty, savory cheese paired with a ginger snap crunch.",
       "I call this next course 'East Meets the Uncharted.' We're taking a beloved Korean barbecue pork belly profile and pairing it with a rich blue cheese and fruit pairing that will completely surprise you.",
