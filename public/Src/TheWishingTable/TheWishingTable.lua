@@ -95,6 +95,9 @@ function TheWishingTable.TheWishingTable.speakconsumableSpell(spellId)
       "The tortollans gave their live for this meal! (they got caught up in their own plastic soup)",
       "This mushroom dish is inspired by the Sporregar. There might be even authentic ingredients in there too!",
       "I present to you, my award winning: Teddy Bear 'Meatloaf'!",
+      "We have a, not to be mentioned further, person in the group who is allergic to bananas. This table is bana free.",
+      "Fresh food, fresh food! By popular demand, no purple colors in here.",
+      "Let's sit down and talk family matters",
     }
 
   -- spell based
@@ -151,6 +154,36 @@ function TheWishingTable.TheWishingTable.speakconsumableSpell(spellId)
     table.insert(
       consumableSpellLines,
       "Home made chicken nuggets, Jamie knows that ground bones in there is what people love!"
+    )
+    table.insert(
+      consumableSpellLines,
+      "I've used my brethren's bones to create this delicious soupe. Try the marrow."
+    )
+  end
+
+  if (playerRace == Race.HighmountainTauren or playerRace == Race.Tauren) then
+    table.insert(consumableSpellLines, "With extra ranch sauce!")
+    table.insert(consumableSpellLines, "I have for you, a pan seared Tauren-wellington.")
+    table.insert(consumableSpellLines, "Some Tauren-wellington")
+  end
+
+  if (playerRace == Race.HighmountainTauren) then
+    local highmountainTaurenHomelands = { "Highmountain", "Thunder Totem" }
+    local highmountainTaurenHomeland =
+      highmountainTaurenHomelands[fastrandom(1, #highmountainTaurenHomelands)]
+    table.insert(consumableSpellLines, "With extra ranch sauce!")
+    table.insert(consumableSpellLines, "I have for you, a pan seared Tauren-wellington.")
+    table.insert(consumableSpellLines, "These are " .. highmountainTaurenHomeland .. " tacos.")
+  end
+
+  if (playerRace == Race.Tauren) then
+    local taurenHomelands =
+      { "Mulgore", "Thunder Bluff", "The Barrens", "Feralas", "Thousand Needles" }
+    local taurenHomeland = taurenHomelands[fastrandom(1, #taurenHomelands)]
+    table.insert(consumableSpellLines, "With extra ranch sauce!")
+    table.insert(
+      consumableSpellLines,
+      "Some Tauren-wellington, sourced fresh from " .. taurenHomeland .. "."
     )
   end
 
