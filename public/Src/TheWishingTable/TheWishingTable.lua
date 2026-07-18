@@ -100,6 +100,29 @@ function TheWishingTable.TheWishingTable.speakconsumableSpell(spellId)
       "Let's sit down and talk family matters",
     }
 
+  -- Ray McCooney's riddles:
+  table.insert(
+    consumableSpellLines,
+    "I have four legs, a tail, whiskers, and I like cheese. I am a mouse. What am I?"
+  )
+  table.insert(
+    consumableSpellLines,
+    "I'm hard, yet soft. I'm colored, yet clear. I'm fruity and sweet. I am jelly, what am I?"
+  )
+  table.insert(
+    consumableSpellLines,
+    "Did you ever hear the legend of the seeded fruit that is often mistaken for a vegetable? Red in color and fleshy within... but beware of the pips!"
+  )
+  table.insert(
+    consumableSpellLines,
+    "Did you know the cow's secret? It secretes a liquor from its udder."
+  )
+  table.insert(
+    consumableSpellLines,
+    "Have you ever heard of a thing called butter? A golden color and slippery to the touch."
+  )
+  table.insert(consumableSpellLines, "Chocolate cake... chocolate cake... have ye any nuts?")
+
   -- spell based
   table.insert(
     consumableSpellLines,
