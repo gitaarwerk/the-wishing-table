@@ -74,31 +74,49 @@ function TheWishingTable.TheWishingTable.speakconsumableSpell(spellId)
   end
 
   local consumableSpellLines = {
-      "Feat, my pretties! FEAST!!",
-      "I'd like to present a dessert that really blurs the line between the holiday cookie jar and a French cheese board. Prepare yourselves for melty, savory cheese paired with a ginger snap crunch.",
-      "I call this next course 'East Meets the Uncharted.' We're taking a beloved Korean barbecue pork belly profile and pairing it with a rich blue cheese and fruit pairing that will completely surprise you.",
-      "Cake or death?",
-      "We dine well here in ${zoneName}, we eat ham and jam and Spam a lot!",
-      "Spam! Spam! Spam!",
-      "We have conduments!!, like ketchup! Ketchup is just a kind of fruit jam.",
-      "WE NEED MORE CHICKEN NUGGETS!!! FAST!!!",
-      "The best part of a cucumber tastes like the worst part of a watermelon.",
-      "Try my 'special sauce'.",
-      "One bad hamburger, you can destroy McDonald's!",
-      "At least I know what I am putting in it.",
-      "Great ${playerRace} food.",
-      "Crust first!",
-      "The events are so exciting. When I’m done I don’t want to eat. That's why we eat first!",
-      "Everyone loves something at McDonald's, but this one is just deplorable...",
-      "If you combine this wine and dinner, the new word is winner.",
-      "Maybe this junk food is good and the other food is no good.",
-      "The tortollans gave their live for this meal! (they got caught up in their own plastic soup)",
-      "This mushroom dish is inspired by the Sporregar. There might be even authentic ingredients in there too!",
-      "I present to you, my award winning: Teddy Bear 'Meatloaf'!",
-      "We have a, not to be mentioned further, person in the group who is allergic to bananas. This table is bana free.",
-      "Fresh food, fresh food! By popular demand, no purple colors in here.",
-      "Let's sit down and talk family matters",
-    }
+    "Feat, my pretties! FEAST!!!",
+    "THAT'S A LOT OF NUTS!!!",
+    "I'd like to present a dessert that really blurs the line between the holiday cookie jar and a French cheese board. Prepare yourselves for melty, savory cheese paired with a ginger snap crunch.",
+    "I call this next course 'East Meets the Uncharted.' We're taking a beloved Korean barbecue pork belly profile and pairing it with a rich blue cheese and fruit pairing that will completely surprise you.",
+    "Cake or death?",
+    "We dine well here in ${zoneName}, we eat ham and jam and Spam a lot!",
+    "Spam! Spam! Spam!",
+    "We have conduments!!, like ketchup! Ketchup is just a kind of fruit jam.",
+    "WE NEED MORE CHICKEN NUGGETS!!! FAST!!!",
+    "The best part of a cucumber tastes like the worst part of a watermelon.",
+    "Try my 'special sauce'.",
+    "One bad hamburger, you can destroy McDonald's!",
+    "At least I know what I am putting in it.",
+    "Great ${playerRace} food.",
+    "Crust first!",
+    "When you've all eaten properly, you get epix!",
+    "The events are so exciting. When I’m done I don’t want to eat. That's why we eat first!",
+    "Everyone loves something at McDonald's, but this one is just deplorable...",
+    "If you combine this wine and dinner, the new word is winner.",
+    "Maybe this junk food is good and the other food is no good.",
+    "The tortollans gave their live for this meal! (they got caught up in their own plastic soup)",
+    "This mushroom dish is inspired by the Sporregar. There might be even authentic ingredients in there too!",
+    "I present to you, my award winning: Teddy Bear 'Meatloaf'!",
+    "We have a, not to be mentioned further, person in the group who is allergic to bananas. This table is bana free.",
+    "Fresh food, fresh food! By popular demand, no purple colors in here.",
+    "Let's sit down and talk family matters",
+    "Fresh pizza! Obviously, with pineapples!",
+    "There's enough garlic in here to kill every vampire in Europe.", -- Gordon Ramsay
+    "I'm not the best cook, but at least my dog food looks pretty on a plate!",
+    "Don't worry, the smoke detector only went off for a minute.",
+    "Eat it fast before the structural integrity fails.",
+    "Cooked inside a nuclear reactor. It was the only heat source available",
+    "I promise it tastes better than it looks. Or smells. Or feels.",
+    "Bon appétit! Please sign these liability waivers first.",
+    "It’s an experimental recipe. The experiment is seeing if we survive.",
+    "I dropped a piece on the floor, but I honestly don't know which one.",
+    "It was supposed to be a soufflé, but it identified as a pancake today.",
+    "I didn't have all the ingredients, so I used my imagination and some ketchup.",
+    "Behold! A Michelin-starred disaster.",
+    "It’s rustic. Which is chef code for 'I completely messed up the presentation'.",
+    "I call this dish: 'What was left in the fridge before payday'.",
+    "This is me on a plate. I just need a couple of heals to get to the next fight.",
+  }
 
   -- Ray McCooney's riddles:
   table.insert(
@@ -150,7 +168,45 @@ function TheWishingTable.TheWishingTable.speakconsumableSpell(spellId)
     table.insert(consumableSpellLines, spellName .. " explodes into a poisonous goo")
   end
 
+  if (spellCategory == "mage_table") then
+    table.insert(
+      consumableSpellLines,
+      "I conjured this out of thin air. It restores 100% health, but zero dignity."
+    )
+    table.insert(consumableSpellLines, "Careful, it tastes exactly like mana and regret.")
+    table.insert(
+      consumableSpellLines,
+      "Arcane food needs to be enjoyed chaotic! Fight for it, peasants, FIGHT!!"
+    )
+  end
+
+  if (spellCategory == "cauldron") then
+    table.insert(
+      consumableSpellLines,
+      "Allergy information: This cauldron contains shellfish, gluten, annoying children and frogs."
+    )
+    table.insert(
+      consumableSpellLines,
+      "The only reason why this cauldron's stats are maintained through death is my nightmares of you all are conjured within."
+    )
+  end
+
+  if (spellCategory == "feast") then
+    table.insert(
+      consumableSpellLines,
+      "This is a feast, fit for kings and queens. They did found it, however, not good enough. So, enjoy!"
+    )
+    table.insert(consumableSpellLines, "It has a 1% drop rate from my oven. Roll for loot!")
+  end
+
   -- Class/Race based
+  if (playerRace ~= Race.Undead) then
+    table.insert(
+      consumableSpellLines,
+      "I put my blood, sweat, and tears into this. Mostly tears. A little blood."
+    )
+  end
+
   if (playerClass == Class.Warlock) then
     table.insert(consumableSpellLines, "I've conjured a pretty big demon for this epic feast!")
   end
